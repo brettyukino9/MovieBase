@@ -1,0 +1,19 @@
+@import url(./styles.css);
+
+h1 {
+    font-family: 'Rowdies', sans-serif !important;
+    color: var(--bs-secondary); 
+}
+
+label {
+    align-self: left;
+    color: var(--bs-primary);
+    font-weight: bold;
+    font-size: large;
+    margin-top: 10px;
+}
+
+#signin-btn {
+    grid-column-start: 1;
+    grid-column-end: 3;
+}

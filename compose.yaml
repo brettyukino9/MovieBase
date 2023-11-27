@@ -31,11 +31,11 @@ services:
   api:
     container_name: moviebase-api
     build:
-      context: ./backend
+      context: ./api
     env_file:
       - .env 
     volumes:
-      - "./backend:/app"
+      - "./api:/app"
     depends_on:
       db:
         condition: service_healthy

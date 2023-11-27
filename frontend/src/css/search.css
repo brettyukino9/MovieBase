@@ -40,3 +40,7 @@ form[role="search"] {
 .query-filter {
   border-right-color: black;
 }
+
+li {
+  cursor: pointer;
+}

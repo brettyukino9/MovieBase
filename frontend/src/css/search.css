@@ -1,0 +1,42 @@
+nav {
+  color: white;
+}
+
+.container-fluid {
+  color: white;
+}
+
+.username-label {
+  margin: 0px;
+}
+
+.nav-link {
+  color: white;
+}
+
+.nav-link.active {
+  color: white!important;
+  text-decoration: underline;
+}
+
+.navbar-brand {
+  color: white;
+}
+
+
+form[role="search"] {
+  flex-grow: 2;
+  max-width: 650px;
+}
+
+.card-title, .card-body {
+  padding: 5px;
+}
+
+.card {
+  cursor: pointer;
+}
+
+.query-filter {
+  border-right-color: black;
+}

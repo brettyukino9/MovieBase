@@ -1,7 +1,7 @@
 const express = require('express');
 const tokenParse = require('cookie-parser');
-const router = express.Router();
-
+const router = express.Router("/api");
+const db = require('./DBConnect.js');
 router.use(express.static('static'));
 router.use(express.urlencoded({extended: true}));
 router.use(tokenParse());
@@ -34,6 +34,13 @@ router.post('/logout', (req, res) => {
  */
 router.get('/getCurrentUser', checkSession, (req, res) => {
     return res.status(200).json(req.user);
+});
+
+router.get('/test', (req, res) => {
+    db.query("SELECT * FROM CastCrew").then(results => {
+        return res.status(200).json({data: results});
+    });
+    
 });
 
 // TODO: Add routes for database interactions

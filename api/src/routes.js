@@ -11,14 +11,34 @@ const {checkSession, stopSession, startSession} = require('./token.js');
 
 // Create user vaildates the data and returns a success boolean
 router.post('/createAccount', async (req,res) => {
-    
+    if(!req.body.firstName || !req.body.lastName || !req.body.email || !req.body.password) {
+        return res.status(400).json({success: false, error: "Missing data"});
+    }
+
+    if(req.body.email.indexOf('@') === -1 && req.body.email.indexOf('.') === -1) {
+        return res.status(400).json({success: false, error: "Please enter a valid email"});
+    }
+
+    if(req.body.password.length > 100) {
+        return res.status(400).json({success: false, error: "Please make password less than 100 characters"});
+    }
+
+    db.query("INSERT INTO User (firstName, lastName, email, password) VALUES (?, ?, ?, ?)", [req.body.firstName, req.body.lastName, req.body.email, req.body.password]).then(results => {
+        return res.status(200).json({success: true});
+    });
 });
 
 /**
  * API Method for logging in to the system
  */
 router.post('/login', async (req, res) => {
-    
+    user = db.query("SELECT * FROM User WHERE email = ? AND password = ?", [req.body.email, req.body.password]);
+    if(user.length === 0) {
+        return res.status(400).json({success: false, error: "Invalid email or password"});
+    }
+
+    startSession(req, res, user[0]);    
+    res.json({success: true});
 });
 
 /**

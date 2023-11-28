@@ -118,26 +118,114 @@ router.get('/list/:userId', (req, res) => {
 });
 
 // Get Specific Media Info
+router.get('/list/:mediaId', (req, res) => {
+    const mediaId = req.params.mediaId;
+
+    const query = "SELECT * FROM moviebase.media WHERE mediaId = ?";
+    
+    db.query(query,[mediaId]).then(results => {
+        return res.status(200).json({data: results});
+    });
+    
+});
 
 // Write a Review
+router.post('/review/:userId/:mediaId', (req, res) => {
+    const userId = req.params.userId;
+    const mediaId = req.params.mediaId;
+    const review = req.body;
+    const ratingId = -1;
+
+    const rating_query = "INSERT INTO moviebase.rating (score, userId, mediaId) VALUES (?, ?, ?)";
+    db.query(rating_query,[userId, mediaId, review.score]).then(results => {
+        ratingId = results[0].ratingId;
+        // Not sure if you can get the ratingId from this
+    });
+
+    const query = "INSERT INTO moviebase.review (PublicPrivate, Description, userRatingId) VALUES (?, ?, ?)";
+    db.query(query,[review.publicPrivate, review.description, ratingId ]).then(results => {
+        return res.status(200).json({data: results});
+    });
+});
 
 // Get a review
+router.put('/review/:userId/:mediaId', (req, res) => {
+    const userId = req.params.userId;
+    const mediaId = req.params.mediaId;
+
+    const query = "SELECT * FROM moviebase.review WHERE userId = ? AND mediaId = ?";
+    db.query(query,[userId, mediaId]).then(results => {
+        return res.status(200).json({data: results});
+    });
+});
 
 // Edit a review
+router.put('/review/:userId/:mediaId', (req, res) => {
+    const review = req.body;
+    const get_review_query = "SELECT * FROM moviebase.review WHERE userId = ? AND mediaId = ?";
+    const reviewId = -1;
+    db.query(get_review_query,[userId, mediaId]).then(results => {
+        reviewId = results[0].userRatingId;
+        if(results[0].score != review.score){
+            const score_query = "UPDATE moviebase.media SET score = ? WHERE mediaId = ?";
+            db.query(score_query,[review.score, results[0].mediaId]).then(results => {
+                // Do something with the results
+            });
+        }
+    });
+    const query = "UPDATE moviebase.review SET PublicPrivate = ?, Description = ? WHERE userRatingId = ?";
+
+    db.query(query,[review.publicPrivate, review.description, review.ratingId]).then(results => {
+        return res.status(200).json({data: results});
+    });
+    
+});
 
 // Get all reviews for a media
+router.get('/review/:mediaId', (req, res) => {
+    const mediaId = req.params.mediaId;
+    const query = "SELECT * FROM moviebase.review WHERE mediaId = ?";
+
+    db.query(query,[mediaId]).then(results => {
+        return res.status(200).json({data: results});
+    });
+    
+});
 
 // Upload new media
 
 // Get Profile Info
+router.get('/user/:userId', (req, res) => {
+    const userId = req.params.userId;
+    const query = "SELECT * FROM moviebase.user WHERE userId = ?";
 
-// Edit First Name
+    db.query(query,[userId]).then(results => {
+        return res.status(200).json({data: results});
+    });
+    
+});
 
-// Edit Last Name
+// Edit User Credentials - I think we can do these in one call hopefully 
+router.put('/user/:userId', (req, res) => {
+    const userId = req.params.userId;
+    const user = req.body;
+    //some sort of user validation?
+    const query = "UPDATE moviebase.user SET firstName = ?, lastName = ?, email = ?, password = ? WHERE userId = ?";
 
-// Edit Email
+    db.query(query,[user.firstName, user.lastName, user.password, userId]).then(results => {
+        return res.status(200).json({data: results});
+    });
+    
+});
 
-// Edit Password
+
+
+// Edit Last Name?
+
+// Edit Email?
+
+// Edit Password?
+
 
 // View media list
 router.get('/list/:listId/:userId', (req, res) => {
@@ -159,10 +247,9 @@ router.post('/list/:userId', (req, res) => {
     const list = req.body;
     //some sort of user validation?
 
-    // Need to get the name and desc of list from the body
-    const query = ""
+    const query = "INSERT INTO moviebase.list (name, description, userId) VALUES (?, ?, ?)";
     
-    db.query(query,[listId, mediaId]).then(results => {
+    db.query(query,[list.name,list.description, userId]).then(results => {
         return res.status(200).json({data: results});
     });
     

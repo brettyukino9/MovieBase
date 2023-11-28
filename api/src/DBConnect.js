@@ -1,6 +1,15 @@
 //Implement mySQL
 const mariaDB = require('mysql');
 
+const path = require('path');
+const dotenv = require('dotenv');
+
+// Specify the path to the .env file (two directories up)
+const envPath = path.resolve(__dirname, '../../.env');
+
+// Load environment variables from the .env file
+dotenv.config({ path: envPath });
+// require('dotenv').config();
 let connection;
 
 /**
@@ -20,6 +29,15 @@ exports.getConnection = () => {
             database: process.env.MYSQL_DATABASE,
             charset: process.env.DB_CHARSET
         });
+        console.log("created connection")
+        const result = connection.query('GRANT ALL PRIVILEGES ON '+process.env.MYSQL_DB+'.* TO '+process.env.MYSQL_USER+'@'+process.env.MYSQL_HOST+'');
+           // Log the query result
+        console.log('Query2 result:', result);
+        const result2 = connection.query('ALTER USER '+process.env.MYSQL_USER+'@'+process.env.MYSQL_HOST+' IDENTIFIED WITH mysql_native_password BY '+process.env.MYSQL_PASSWORD+'');
+        console.log('Query3 result:', result2);
+        const result3 = connection.query('FLUSH PRIVILEGES');
+        console.log('Query4 result:', result3);
+
     }
     return connection;
 };

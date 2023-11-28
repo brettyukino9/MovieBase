@@ -1,6 +1,15 @@
 const mysql = require('mysql2');
 
 
+const path = require('path');
+const dotenv = require('dotenv');
+
+// Specify the path to the .env file (two directories up)
+const envPath = path.resolve(__dirname, '../../.env');
+
+// Load environment variables from the .env file
+dotenv.config({ path: envPath });
+
 let connection;
 
 exports.getDatabaseConnection = () => {

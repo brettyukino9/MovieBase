@@ -4,7 +4,7 @@ const db = require('./DBConnect.js'); // Replace with the actual path to your da
 const testDatabaseConnection = async () => {
   try {
     // Get the database connection
-    const connection = db.getConnection();
+    const connection = db.getDatabaseConnection();
 
     // Perform a simple query
     const queryResult = await db.query('SELECT * FROM moviebase.genre');

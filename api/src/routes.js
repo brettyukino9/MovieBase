@@ -156,8 +156,8 @@ router.post('/review/:userId/:mediaId', (req, res) => {
     const review = req.body;
     const ratingId = -1;
 
-    const rating_query = "INSERT INTO moviebase.rating (score, userId, mediaId) VALUES (?, ?, ?)";
-    db.query(rating_query,[userId, mediaId, review.score]).then(results => {
+    const rating_query = "INSERT INTO moviebase.rating (score, userId, mediaId) VALUES (?, ?, ?) RETURNING *";
+    db.query(rating_query,[review.score, userId, mediaId]).then(results => {
         ratingId = results[0].ratingId;
         // Not sure if you can get the ratingId from this
     });

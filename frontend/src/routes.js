@@ -7,7 +7,7 @@ const cookieParser = require('cookie-parser');
 // Set the paths for the static resources and templates
 routes.use(express.static(__dirname));
 const path = require('path');
-const html_dir = path.join(__dirname, './templates/');
+const html_dir = path.join(__dirname, './template/');
 
 // Parsers for cookies and body text
 routes.use(cookieParser());
@@ -25,6 +25,10 @@ routes.get('/signin', (req, res) => {
 routes.get('/signup', (req, res) => {
     res.sendFile(`${html_dir}signup.html`);
 });
+
+routes.get('/search', (req, res) => {
+    res.sendFile(`${html_dir}search.html`)
+})
 
 // Export this code to be used for other scripts
 module.exports = routes;

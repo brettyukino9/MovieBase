@@ -27,6 +27,7 @@ services:
       retries: 10
     volumes:
       - mysql_database:/var/lib/mysql
+      - ./database/:/docker-entrypoint-initdb.d
 
   api:
     container_name: moviebase-api

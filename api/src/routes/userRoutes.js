@@ -1,9 +1,4 @@
 const express = require('express');
-<<<<<<< HEAD:api/src/routes/userRoutes.js
-const router = express.Router();
-
-const {checkSession, stopSession, startSession} = require('../token.js');
-=======
 const tokenParse = require('cookie-parser');
 const router = express.Router("/api");
 const db = require('./DBConnect.js');
@@ -13,7 +8,6 @@ router.use(tokenParse());
 router.use(express.json());
 
 const {checkSession, stopSession, startSession} = require('./token.js');
->>>>>>> nbthomas_backend_routes_implementation:api/src/routes.js
 
 // Create user vaildates the data and returns a success boolean
 router.post('/createAccount', async (req,res) => {

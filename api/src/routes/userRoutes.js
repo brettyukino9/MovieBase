@@ -1,13 +1,7 @@
 const express = require('express');
-const tokenParse = require('cookie-parser');
 const router = express.Router();
 
-router.use(express.static('static'));
-router.use(express.urlencoded({extended: true}));
-router.use(tokenParse());
-router.use(express.json());
-
-const {checkSession, stopSession, startSession} = require('./token.js');
+const {checkSession, stopSession, startSession} = require('../token.js');
 
 // Create user vaildates the data and returns a success boolean
 router.post('/createAccount', async (req,res) => {

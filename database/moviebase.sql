@@ -43,7 +43,8 @@ CREATE TABLE moviebase.Media (
   `Title` VARCHAR(100) NOT NULL,
   `Description` BLOB NOT NULL,
   `ReleaseDate` DATE NOT NULL,
-  `RunTime` INT NOT NULL DEFAULT 0,
+  `RunTime` INT NOT NULL,
+  `AverageRating` DECIMAL(3, 1) NOT NULL,
   `Poster` BLOB NOT NULL,
   `MediaTypeId` INT NOT NULL,
   `PublisherId` INT NOT NULL,
@@ -119,18 +120,19 @@ CREATE TABLE moviebase.AgeRating (
 );
 
 -- ---
--- Table 'UserRating'
+-- Table 'Review'
 -- 
 -- ---
 
-DROP TABLE IF EXISTS moviebase.UserRating;
+DROP TABLE IF EXISTS moviebase.Review;
 		
-CREATE TABLE moviebase.UserRating (
-  `UserRatingId` INT NOT NULL AUTO_INCREMENT,
-  `Rating` DECIMAL NOT NULL,
+CREATE TABLE moviebase.Review (
+  `ReviewId` INT NOT NULL AUTO_INCREMENT,
+  `Description` BLOB NOT NULL,
+  `Rating` DECIMAL(3, 1) NOT NULL,
   `MediaId` INT NOT NULL,
   `UserId` INT NOT NULL,
-  PRIMARY KEY (`UserRatingId`)
+  PRIMARY KEY (`ReviewId`)
 );
 
 -- ---
@@ -174,21 +176,6 @@ CREATE TABLE moviebase.CastCrew (
   `LastName` VARCHAR(70) NOT NULL,
   `CastCrewTypeId` INT NOT NULL,
   PRIMARY KEY (`CastCrewId`)
-);
-
--- ---
--- Table 'Review'
--- 
--- ---
-
-DROP TABLE IF EXISTS moviebase.Review;
-		
-CREATE TABLE moviebase.Review (
-  `ReviewId` INT NOT NULL AUTO_INCREMENT,
-  `PublicPrivate` TINYINT NOT NULL,
-  `Description` BLOB NOT NULL,
-  `UserRatingId` INT NOT NULL,
-  PRIMARY KEY (`ReviewId`)
 );
 
 -- ---
@@ -278,11 +265,10 @@ ALTER TABLE moviebase.Media ADD FOREIGN KEY (PublisherId) REFERENCES moviebase.P
 ALTER TABLE moviebase.Media ADD FOREIGN KEY (LanguageId) REFERENCES moviebase.Language (`LanguageId`);
 ALTER TABLE moviebase.Media ADD FOREIGN KEY (AgeRatingId) REFERENCES moviebase.AgeRating (`AgeRatingId`);
 ALTER TABLE moviebase.AgeRating ADD FOREIGN KEY (AgeRatingTypeId) REFERENCES moviebase.AgeRatingType (`AgeRatingTypeId`);
-ALTER TABLE moviebase.UserRating ADD FOREIGN KEY (MediaId) REFERENCES moviebase.Media (`MediaId`);
-ALTER TABLE moviebase.UserRating ADD FOREIGN KEY (UserId) REFERENCES moviebase.User (`UserId`);
+ALTER TABLE moviebase.Review ADD FOREIGN KEY (MediaId) REFERENCES moviebase.Media (`MediaId`);
+ALTER TABLE moviebase.Review ADD FOREIGN KEY (UserId) REFERENCES moviebase.User (`UserId`);
 ALTER TABLE moviebase.List ADD FOREIGN KEY (UserId) REFERENCES moviebase.User (`UserId`);
 ALTER TABLE moviebase.CastCrew ADD FOREIGN KEY (CastCrewTypeId) REFERENCES moviebase.CastCrewType (`CastCrewTypeId`);
-ALTER TABLE moviebase.Review ADD FOREIGN KEY (UserRatingId) REFERENCES moviebase.UserRating (`UserRatingId`);
 ALTER TABLE moviebase.MediaStreamingService ADD FOREIGN KEY (MediaId) REFERENCES moviebase.Media (`MediaId`);
 ALTER TABLE moviebase.MediaStreamingService ADD FOREIGN KEY (StreamingServiceId) REFERENCES moviebase.StreamingService (`StreamingServiceId`);
 ALTER TABLE moviebase.MediaGenre ADD FOREIGN KEY (MediaId) REFERENCES moviebase.Media (`MediaId`);
@@ -303,11 +289,10 @@ ALTER TABLE moviebase.MediaList ADD FOREIGN KEY (ListId) REFERENCES moviebase.Li
 -- ALTER TABLE `StreamingService` ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
 -- ALTER TABLE `Genre` ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
 -- ALTER TABLE `AgeRating` ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
--- ALTER TABLE `UserRating` ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+-- ALTER TABLE `Review` ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
 -- ALTER TABLE `Language` ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
 -- ALTER TABLE `List` ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
 -- ALTER TABLE `CastCrew` ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
--- ALTER TABLE `Review` ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
 -- ALTER TABLE `MediaStreamingService` ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
 -- ALTER TABLE `MediaGenre` ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
 -- ALTER TABLE `CastCrewType` ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
@@ -438,27 +423,85 @@ INSERT INTO moviebase.AgeRating (AgeRatingId, Description, AgeRatingTypeId) VALU
 (19, 'Some Humor Risks, Innocent Romance', 2),
 (20, 'Strong Language, Intense Adult Themes', 4);
 
-INSERT INTO moviebase.Media (MediaId, Title, Description, ReleaseDate, RunTime, Poster, MediaTypeId, PublisherId, LanguageId, AgeRatingId) VALUES
-(1, 'The Lost City', 'A thrilling adventure in a mysterious city', '2023-02-10', 120000, 'https://i.imgur.com/kLhG8In.jpg', 1, 5, 1, 2),
-(2, 'Galactic Odyssey', 'Space epic with intergalactic battles', '2023-05-15', 180000, 'https://i.imgur.com/ptndfHJ.jpg', 1, 2, 1, 4),
-(3, 'Timeless Love', 'A romantic tale transcending time and space', '2022-08-22', 150000, 'https://i.imgur.com/2o1z3NS.jpg', 1, 3, 1, 3),
-(4, 'Quantum Conundrum', 'Mind-bending sci-fi exploration', '2023-04-05', 135000, 'https://i.imgur.com/jzMETUO.jpg', 1, 2, 2, 2),
-(5, 'Hidden Realms', 'Discover the secrets of hidden realms', '2022-11-30', 160000, 'https://i.imgur.com/T7HR2Di.jpg', 1, 5, 3, 2),
-(6, 'Eternal Enigma', 'Mystery and suspense in a timeless setting', '2023-07-18', 145000, 'https://i.imgur.com/p1K9wC6.jpg', 2, 5, 5, 3),
-(7, 'Beyond the Horizon', 'Exploration and adventure beyond known boundaries', '2022-03-08', 170000, 'https://i.imgur.com/1PopNpO.jpg', 1, 2, 1, 1),
-(8, 'Code Breakers', 'Thrilling espionage and code-breaking', '2023-01-12', 130000, 'https://i.imgur.com/pcPHXC7.jpg', 1, 1, 2, 3),
-(9, 'Dreamscape Chronicles', 'Journey through fantastical dreamscapes', '2022-06-25', 155000, 'https://i.imgur.com/7t32mNk.jpg', 2, 1, 3, 1),
-(10, 'Chronicles of Destiny', 'Epic saga of heroes and villains', '2023-09-20', 200000, 'https://i.imgur.com/jIRsQaX.jpg', 1, 5, 1, 3),
-(11, 'Lost in Translation', 'Hilarious comedy of linguistic misunderstandings', '2022-04-14', 110000, 'https://i.imgur.com/5SbCvbY.jpg', 1, 4, 1, 1),
-(12, 'Infinite Loop', 'Sci-fi adventure with time loops and paradoxes', '2023-11-08', 140000, 'https://i.imgur.com/qXp7oRC.jpg', 2, 2, 2, 3),
-(13, 'Whispers in the Dark', 'Suspenseful thriller set in a haunted mansion', '2022-09-17', 125000, 'https://i.imgur.com/XAX2Zzb.jpg', 1, 1, 4, 4),
-(14, 'Crimson Skies', 'Action-packed aerial battles in a dystopian future', '2023-03-27', 165000, 'https://i.imgur.com/1liMxwG.jpg', 1, 1, 2, 4),
-(15, 'Renaissance Riddles', 'Puzzle-solving adventure in the Renaissance era', '2022-12-03', 148000, 'https://i.imgur.com/YNZKwdL.jpg', 2, 5, 3, 3),
-(16, 'Neon Nights', 'Cyberpunk noir with neon-soaked cityscapes', '2023-06-10', 155000, 'https://i.imgur.com/rcIxz10.jpg', 1, 1, 1, 3),
-(17, 'The Enchanted Forest', 'Fantasy adventure through a magical forest', '2022-10-28', 175000, 'https://i.imgur.com/PeJbf5J.jpg', 1, 5, 5, 1),
-(18, 'Digital Mirage', 'Virtual reality thriller in a digital world', '2023-02-28', 130000, 'https://i.imgur.com/lpOxsg2.jpg', 2, 1, 2, 2),
-(19, 'Lost and Found', 'Heartwarming drama of self-discovery and friendship', '2022-07-11', 120000, 'https://i.imgur.com/rY4Qhck.jpg', 1, 3, 3, 2),
-(20, 'Spectral Shadows', 'Comical mystery with ghostly apparitions', '2023-10-15', 145000, 'https://i.imgur.com/YknH26F.jpg', 2, 4, 4, 4);
+INSERT INTO moviebase.User (UserId, FirstName, LastName, Email, Password, Salt) VALUES 
+(1, 'Brett', 'Reier', 'bpreier@ncsu.edu', 'password', '0000'),
+(2, 'Chris', 'Zavala', 'czavala2@ncsu.edu', 'password', '0000'),
+(3, 'Jaden', 'Jenkins', 'jajenki6@ncsu.edu', 'password', '0000'),
+(4, 'Michael', 'Abrams', 'msabrams@ncsu.edu', 'password', '0000'),
+(5, 'Noah', 'Thomas', 'nbthomas@ncsu.edu', 'password', '0000');
+
+INSERT INTO moviebase.List (ListId, Name, Description, UserId) VALUES 
+(1, 'Brett\'s Watched Movies', 'This is a list of movies Brett has watched.', 1),
+(2, 'Chris\' Watched Movies', 'This is a list of movies Chris has watched.', 2),
+(3, 'Jaden\'s Watched Movies', 'This is a list of movies Jaden has watched.', 3),
+(4, 'Michael\'s Watched Movies', 'This is a list of movies Michael has watched.', 4),
+(5, 'Noah\'s Watched Movies', 'This is a list of movies Noah has watched.', 5);
+
+INSERT INTO moviebase.Media (MediaId, Title, Description, ReleaseDate, RunTime, AverageRating, Poster, MediaTypeId, PublisherId, LanguageId, AgeRatingId) VALUES
+(1, 'The Lost City', 'A thrilling adventure in a mysterious city', '2023-02-10', 120000, 0.0, 'https://i.imgur.com/kLhG8In.jpg', 1, 5, 1, 2),
+(2, 'Galactic Odyssey', 'Space epic with intergalactic battles', '2023-05-15', 180000, 0.0, 'https://i.imgur.com/ptndfHJ.jpg', 1, 2, 1, 4),
+(3, 'Timeless Love', 'A romantic tale transcending time and space', '2022-08-22', 150000, 0.0, 'https://i.imgur.com/2o1z3NS.jpg', 1, 3, 1, 3),
+(4, 'Quantum Conundrum', 'Mind-bending sci-fi exploration', '2023-04-05', 135000, 0.0, 'https://i.imgur.com/jzMETUO.jpg', 1, 2, 2, 2),
+(5, 'Hidden Realms', 'Discover the secrets of hidden realms', '2022-11-30', 160000, 0.0, 'https://i.imgur.com/T7HR2Di.jpg', 1, 5, 3, 2),
+(6, 'Eternal Enigma', 'Mystery and suspense in a timeless setting', '2023-07-18', 145000, 0.0, 'https://i.imgur.com/p1K9wC6.jpg', 2, 5, 5, 3),
+(7, 'Beyond the Horizon', 'Exploration and adventure beyond known boundaries', '2022-03-08', 170000, 0.0, 'https://i.imgur.com/1PopNpO.jpg', 1, 2, 1, 1),
+(8, 'Code Breakers', 'Thrilling espionage and code-breaking', '2023-01-12', 130000, 0.0, 'https://i.imgur.com/pcPHXC7.jpg', 1, 1, 2, 3),
+(9, 'Dreamscape Chronicles', 'Journey through fantastical dreamscapes', '2022-06-25', 155000, 0.0, 'https://i.imgur.com/7t32mNk.jpg', 2, 1, 3, 1),
+(10, 'Chronicles of Destiny', 'Epic saga of heroes and villains', '2023-09-20', 200000, 0.0, 'https://i.imgur.com/jIRsQaX.jpg', 1, 5, 1, 3),
+(11, 'Lost in Translation', 'Hilarious comedy of linguistic misunderstandings', '2022-04-14', 110000, 0.0, 'https://i.imgur.com/5SbCvbY.jpg', 1, 4, 1, 1),
+(12, 'Infinite Loop', 'Sci-fi adventure with time loops and paradoxes', '2023-11-08', 140000, 0.0, 'https://i.imgur.com/qXp7oRC.jpg', 2, 2, 2, 3),
+(13, 'Whispers in the Dark', 'Suspenseful thriller set in a haunted mansion', '2022-09-17', 125000, 0.0, 'https://i.imgur.com/XAX2Zzb.jpg', 1, 1, 4, 4),
+(14, 'Crimson Skies', 'Action-packed aerial battles in a dystopian future', '2023-03-27', 165000, 0.0, 'https://i.imgur.com/1liMxwG.jpg', 1, 1, 2, 4),
+(15, 'Renaissance Riddles', 'Puzzle-solving adventure in the Renaissance era', '2022-12-03', 148000, 0.0, 'https://i.imgur.com/YNZKwdL.jpg', 2, 5, 3, 3),
+(16, 'Neon Nights', 'Cyberpunk noir with neon-soaked cityscapes', '2023-06-10', 155000, 0.0, 'https://i.imgur.com/rcIxz10.jpg', 1, 1, 1, 3),
+(17, 'The Enchanted Forest', 'Fantasy adventure through a magical forest', '2022-10-28', 175000, 0.0, 'https://i.imgur.com/PeJbf5J.jpg', 1, 5, 5, 1),
+(18, 'Digital Mirage', 'Virtual reality thriller in a digital world', '2023-02-28', 130000, 0.0, 'https://i.imgur.com/lpOxsg2.jpg', 2, 1, 2, 2),
+(19, 'Lost and Found', 'Heartwarming drama of self-discovery and friendship', '2022-07-11', 120000, 0.0, 'https://i.imgur.com/rY4Qhck.jpg', 1, 3, 3, 2),
+(20, 'Spectral Shadows', 'Comical mystery with ghostly apparitions', '2023-10-15', 145000, 0.0, 'https://i.imgur.com/YknH26F.jpg', 2, 4, 4, 4);
+
+INSERT INTO moviebase.Review (ReviewId, Description, Rating, MediaId, UserId) VALUES 
+(1, 'This thrilling adventure successfully combines mystery and excitement as characters delve into a mysterious city. The plot unfolds with unexpected twists and turns, keeping audiences engaged.', 8.0, 1, 1),
+(2, 'A visually stunning space epic that delivers on its promise of intergalactic battles. The special effects are top-notch, and the narrative offers a gripping journey across the cosmos.', 9.0, 2, 1),
+(3, 'While the romantic tale attempts to transcend time and space, it falls into some clichés. The chemistry between the leads saves it from mediocrity, but the plot lacks innovation.', 6.0, 3, 1),
+(4, 'This mind-bending sci-fi exploration offers a unique take on the genre. The intricacies of quantum mechanics are fascinating, but the plot occasionally gets too convoluted.', 7.0, 4, 1),
+(5, 'As promised, Hidden Realms successfully delivers the secrets of unseen worlds. The visuals are stunning, and the narrative is both captivating and educational.', 8.0, 5, 2),
+(6, 'Despite an intriguing premise of mystery and suspense in a timeless setting, the execution falls short. The pacing is uneven, leaving some loose ends unresolved.', 5.0, 6, 2),
+(7, 'A thrilling exploration that goes beyond known boundaries. The adventurous spirit is palpable, and the cinematography captures the awe of undiscovered territories.', 9.0, 7, 2),
+(8, 'While the espionage and code-breaking elements add intrigue, the plot lacks depth. The characters feel one-dimensional, and the twists are predictable.', 6.0, 8, 2),
+(9, 'Journeying through fantastical dreamscapes proves to be a visually stunning and emotionally resonant experience. The creativity on display is commendable.', 8.0, 9, 3),
+(10, 'This epic saga of heroes and villains has its moments, but some characters lack development, and the plot occasionally loses focus.', 7.0, 10, 3),
+(11, 'Despite attempts at humor through linguistic misunderstandings, the comedy falls flat. The gags become repetitive, and the film struggles to maintain momentum.', 4.0, 11, 3),
+(12, 'A mind-bending sci-fi adventure that successfully explores time loops and paradoxes. The plot is intricate yet accessible, and the resolution is satisfying.', 9.0, 12, 3),
+(13, 'This suspenseful thriller set in a haunted mansion delivers some chilling moments, but the reliance on horror tropes feels overdone.', 7.0, 13, 4),
+(14, 'Action-packed aerial battles in a dystopian future make for a visually stunning experience. The world-building is impressive, even if the plot is somewhat formulaic.', 8.0, 14, 4),
+(15, 'While the puzzle-solving adventure in the Renaissance era has its charm, the plot lacks the necessary depth to fully engage the audience.', 6.0, 15, 4),
+(16, 'This cyberpunk noir with neon-soaked cityscapes is a visual feast. The gripping storyline and well-developed characters contribute to its overall success.', 9.0, 16, 4),
+(17, 'A fantasy adventure through a magical forest is visually enchanting, but the plot occasionally feels predictable and lacks originality.', 7.0, 17, 5),
+(18, 'The virtual reality thriller in a digital world offers a captivating exploration of the consequences of technology. The suspense is well-maintained, and the concept is thought-provoking.', 8.0, 18, 5),
+(19, 'While attempting to be a heartwarming drama of self-discovery and friendship, the film succumbs to clichés, and the emotional beats feel forced.', 5.0, 19, 5),
+(20, 'Despite attempts at comical mystery with ghostly apparitions, the humor misses the mark, and the plot lacks coherence. It struggles to find the right balance between comedy and mystery.', 3.0, 20, 5);
+
+INSERT INTO moviebase.MediaList (MediaId, ListId) VALUES
+(1, 1),
+(2, 1),
+(3, 1),
+(4, 1),
+(5, 2),
+(6, 2),
+(7, 2),
+(8, 2), 
+(9, 3), 
+(10, 3),
+(11, 3), 
+(12, 3), 
+(13, 4),
+(14, 4),
+(15, 4), 
+(16, 4), 
+(17, 5), 
+(18, 5),
+(19, 5), 
+(20, 5);
 
 INSERT INTO moviebase.MediaGenre (MediaId, GenreId) VALUES
 (1, 1), (1, 5),

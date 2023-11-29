@@ -3,10 +3,11 @@ const mariaDB = require('mysql');
 
 let connection;
 
-/**
- * This method makes the connection to the database
- * @returns the database connection
- */
+// /
+ 
+// This method makes the connection to the database
+// @returns the database connection
+// */
 exports.getConnection = () => {
     console.log("In getConnection");
     //If there is no connection
@@ -24,9 +25,9 @@ exports.getConnection = () => {
     return connection;
 };
 
-/**
- * Method closes the connection
- */
+// /
+ 
+// Method closes the connection*/
 exports.close = () => {
     console.log("In close");
     //If there is a connection
@@ -38,11 +39,12 @@ exports.close = () => {
 };
 
 /**
- * Method queries the connection
- * @param {*} query the query for the connection
- * @param {*} params the parameters passed in the connection
- * @returns if an error occurs during query
- */
+ 
+Method queries the connection
+@param {*} query the query for the connection
+@param {*} params the parameters passed in the connection
+@returns if an error occurs during query
+*/
 exports.query = (query, params = []) => {
     console.log("In query");
     return new Promise((resolve, reject) => {

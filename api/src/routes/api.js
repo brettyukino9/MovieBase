@@ -14,7 +14,7 @@ api.use("/users",userRouter);
 api.use("/lists",listRouter);
 api.use("/search",searchRouter);
 api.use("/media",mediaRouter);
-api.use("/review",reviewRouter);
+api.use("/reviews",reviewRouter);
 
 
 

@@ -62,9 +62,11 @@ router.get('/test', (req, res) => {
 
 
 // Get Profile Info
-router.get('/user/:userId', (req, res) => {
+router.get('/:userId', (req, res) => {
     const userId = req.params.userId;
-    const query = "SELECT * FROM moviebase.user WHERE userId = ?";
+    const query = "SELECT * FROM User WHERE userId = ?";
+
+    // TO DO: Implement security measures
 
     db.query(query,[userId]).then(results => {
         return res.status(200).json({data: results});
@@ -72,24 +74,56 @@ router.get('/user/:userId', (req, res) => {
     
 });
 
-// Edit User Credentials - I think we can do these in one call hopefully 
-router.put('/user/:userId', (req, res) => {
+// Edit First Name 
+router.put('/firstName/:userId', (req, res) => {
     const userId = req.params.userId;
     const user = req.body;
-    //some sort of user validation?
-    const query = "UPDATE moviebase.user SET firstName = ?, lastName = ?, email = ?, password = ? WHERE userId = ?";
 
-    db.query(query,[user.firstName, user.lastName, user.password, userId]).then(results => {
+    const query = "UPDATE User SET firstName = ? WHERE userId = ?";
+
+    db.query(query,[user.firstName, userId]).then(results => {
         return res.status(200).json({data: results});
     });
     
 });
 
-// Edit Last Name?
+// Edit Last Name
+router.put('/lastName/:userId', (req, res) => {
+    const userId = req.params.userId;
+    const user = req.body;
 
-// Edit Email?
+    const query = "UPDATE User SET lastName = ? WHERE userId = ?";
 
-// Edit Password?
+    db.query(query,[user.lastName, userId]).then(results => {
+        return res.status(200).json({data: results});
+    });
+    
+});
 
+// Edit Email
+router.put('/email/:userId', (req, res) => {
+    const userId = req.params.userId;
+    const user = req.body;
+
+    const query = "UPDATE User SET email = ? WHERE userId = ?";
+
+    db.query(query,[user.email, userId]).then(results => {
+        return res.status(200).json({data: results});
+    });
+    
+});
+
+// Edit Password
+router.put('/password/:userId', (req, res) => {
+    const userId = req.params.userId;
+    const user = req.body;
+
+    const query = "UPDATE User SET password = ? WHERE userId = ?";
+
+    db.query(query,[user.password, userId]).then(results => {
+        return res.status(200).json({data: results});
+    });
+    
+});
 
 

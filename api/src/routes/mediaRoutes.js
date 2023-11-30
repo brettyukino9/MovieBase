@@ -8,10 +8,10 @@ module.exports = router;
 // Upload new media
 
 // Get Specific Media Info
-router.get('/list/:mediaId', (req, res) => {
+router.get('/:mediaId', (req, res) => {
     const mediaId = req.params.mediaId;
 
-    const query = "SELECT * FROM moviebase.media WHERE mediaId = ?";
+    const query = "SELECT * FROM Media WHERE mediaId = ?";
     
     db.query(query,[mediaId]).then(results => {
         return res.status(200).json({data: results});

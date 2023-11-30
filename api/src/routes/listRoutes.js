@@ -5,27 +5,38 @@ const router = express.Router();
 
 module.exports = router;
 
-// View media list
-router.get('/list/:listId/:userId', (req, res) => {
+// View all media in a list
+router.get('/media/:listId/', (req, res) => {
     const listId = req.params.listId;
-    const userId = req.params.userId;
 
     //some sort of user validation?
-    const query = "SELECT * FROM moviebase.medialist WHERE listId = ? AND userId = ?";
+    const query = "SELECT * FROM MediaList WHERE ListId = ?";
 
-    db.query(query,[listId, userId]).then(results => {
+    db.query(query,[listId]).then(results => {
+        return res.status(200).json({data: results});
+    });
+    
+});
+
+// Get info about a user list
+router.get('/:listId/', (req, res) => {
+    const listId = req.params.listId;
+
+    const query = "SELECT * FROM List WHERE ListId = ?";
+
+    db.query(query,[listId]).then(results => {
         return res.status(200).json({data: results});
     });
     
 });
 
 // Make new media list
-router.post('/list/:userId', (req, res) => {
+router.post('/:userId', (req, res) => {
     const userId = req.params.userId;
     const list = req.body;
     //some sort of user validation?
 
-    const query = "INSERT INTO moviebase.list (name, description, userId) VALUES (?, ?, ?)";
+    const query = "INSERT INTO List (Name, Description, UserId) VALUES (?, ?, ?)";
     
     db.query(query,[list.name,list.description, userId]).then(results => {
         return res.status(200).json({data: results});
@@ -33,14 +44,25 @@ router.post('/list/:userId', (req, res) => {
     
 });
 
-// Remove media from list
-router.delete('/list/:listId/:mediaId/:userId', (req, res) => {
+// Add media to a list
+router.post('/:listId/:mediaId', (req, res) => {
     const listId = req.params.listId;
     const mediaId = req.params.mediaId;
-    const userId = req.params.userId;
 
-    //some sort of user validation?
-    const query = "DELETE FROM moviebase.medialist WHERE listId = ? AND mediaId = ?";
+    const query = "INSERT INTO MediaList (ListId, MediaId) VALUES (?, ?)";
+    
+    db.query(query,[listId, mediaId]).then(results => {
+        return res.status(200).json({data: results});
+    });
+    
+});
+
+// Remove media from list
+router.delete('/:listId/:mediaId', (req, res) => {
+    const listId = req.params.listId;
+    const mediaId = req.params.mediaId;
+
+    const query = "DELETE FROM MediaList WHERE ListId = ? AND MediaId = ?";
     
     db.query(query,[listId, mediaId]).then(results => {
         return res.status(200).json({data: results});
@@ -49,13 +71,11 @@ router.delete('/list/:listId/:mediaId/:userId', (req, res) => {
 });
 
 // Delete list
-router.put('/list/:listId/:mediaId/:userId', (req, res) => {
+router.put('/:listId', (req, res) => {
     const listId = req.params.listId;
-    const mediaId = req.params.mediaId;
-    const userId = req.params.userId;
 
     //some sort of user validation?
-    const query = "INSERT INTO moviebase.medialist (listId, mediaId) VALUES (?, ?)";
+    const query = "DELETE FROM List WHERE ListId = ?";
     
     db.query(query,[listId, mediaId]).then(results => {
         return res.status(200).json({data: results});

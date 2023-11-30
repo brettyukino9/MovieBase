@@ -1,10 +1,10 @@
 const express = require('express');
 const tokenParse = require('cookie-parser');
-const userRouter = require('./userRoutes');
-const listRouter = require('./listRoutes');
-const searchRouter = require('./searchRoutes');
-const mediaRouter = require('./mediaRoutes');
-const reviewRouter = require('./reviewRoutes');
+const userRouter = require('./userRoutes.js');
+const listRouter = require('./listRoutes.js');
+const searchRouter = require('./searchRoutes.js');
+const mediaRouter = require('./mediaRoutes.js');
+const reviewRouter = require('./reviewRoutes.js');
 
 const api = express.Router('/api');
 api.use(express.urlencoded({extended: true}));

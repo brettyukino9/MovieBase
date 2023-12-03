@@ -3,7 +3,7 @@ const express = require ('express');
 
 // Create the app and get the port from the environment
 const app = express();
-const PORT = 8080
+const PORT = 80
 
 // Set the directory for static resources and add the urlencoded middleware
 app.use(express.static(__dirname));

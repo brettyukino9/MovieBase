@@ -12,7 +12,7 @@ router.post('/createAccount', async (req,res) => {
         return res.status(400).json({success: false, error: "Missing data"});
     }
 
-    if(req.body.email.indexOf('@') === -1 && req.body.email.indexOf('.') === -1) {
+    if(req.body.email.indexOf('@') === -1 || req.body.email.indexOf('.') === -1) {
         return res.status(400).json({success: false, error: "Please enter a valid email"});
     }
 
@@ -29,13 +29,26 @@ router.post('/createAccount', async (req,res) => {
  * API Method for logging in to the system
  */
 router.post('/login', async (req, res) => {
-    user = db.query("SELECT * FROM User WHERE email = ? AND password = ?", [req.body.email, req.body.password]);
-    if(user.length === 0) {
+    if(!req.body.email || !req.body.password) {
+        return res.status(400).json({success: false, error: "Missing data"});
+    }
+
+    if(req.body.email.indexOf('@') === -1 || req.body.email.indexOf('.') === -1 || req.body.password.length > 100) {
         return res.status(400).json({success: false, error: "Invalid email or password"});
     }
 
-    startSession(req, res, user[0]);    
-    res.json({success: true});
+    db.query("CALL VerifyUser(?, ?, isVerifiedUser); SELECT isVerifiedUser;", [req.body.email, req.body.password]).then(results => {
+        if(results[0]) {
+            db.query("SELECT * FROM User WHERE email = ?", [req.body.email]).then(results => {
+                startSession(req, res, results[0]);
+                return res.status(200).json({success: true});
+            });
+        } else {
+            return res.status(400).json({success: false, error: "Invalid email or password"});
+        }
+
+    });
+
 });
 
 /**

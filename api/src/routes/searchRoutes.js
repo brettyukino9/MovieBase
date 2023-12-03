@@ -30,7 +30,7 @@ router.get('/search', (req, res) => {
 });
 
 //Get all Media
-router.get('/meadia', (res) => {
+router.get('/media', (res) => {
     db.query("SELECT * FROM Media").then(results => {
         return res.status(200).json({data: results});
     });

@@ -7,6 +7,7 @@ module.exports = router;
 
 
 // Search
+<<<<<<< HEAD
 router.get('/search', (req, res) => {
     const title = req.body.title;
     const desc =  req.body.desc
@@ -35,6 +36,8 @@ router.get('/media', (res) => {
         return res.status(200).json({data: results});
     });
 })
+=======
+>>>>>>> development
 
 // Get all Media Types
 router.get('/mediatype', (req, res) => {

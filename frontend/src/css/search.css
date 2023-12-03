@@ -44,3 +44,24 @@ form[role="search"] {
 li {
   cursor: pointer;
 }
+
+li > span > a {
+  text-decoration: none;
+  color: black;
+}
+
+#dropdown-menu {
+  cursor: pointer;
+}
+
+.fa-star {
+  color: gold;   /* You can use any color you prefer */
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5); /* Add a subtle shadow */
+  transition: transform 0.2s ease-in-out; /* Add a smooth transition effect */
+}
+
+.reviews {
+  max-height: 500px;
+  overflow-y: scroll;
+  background-color: lightcyan;
+}

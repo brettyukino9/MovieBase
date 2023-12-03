@@ -29,6 +29,13 @@ router.get('/search', (req, res) => {
     
 });
 
+//Get all Media
+router.get('/meadia', (res) => {
+    db.query("SELECT * FROM Media").then(results => {
+        return res.status(200).json({data: results});
+    });
+})
+
 // Get all Media Types
 router.get('/mediatype', (req, res) => {
     db.query("SELECT * FROM MediaType").then(results => {

@@ -61,7 +61,5 @@ li > span > a {
 }
 
 .reviews {
-  max-height: 500px;
-  overflow-y: scroll;
   background-color: lightcyan;
 }

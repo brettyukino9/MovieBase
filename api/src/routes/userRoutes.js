@@ -20,7 +20,7 @@ router.post('/createAccount', async (req,res) => {
         return res.status(400).json({success: false, error: "Please make password less than 100 characters"});
     }
 
-    db.query("INSERT INTO User (firstName, lastName, email, password) VALUES (?, ?, ?, ?)", [req.body.firstName, req.body.lastName, req.body.email, req.body.password]).then(results => {
+    db.query("CALL CreateUser(?, ?, ?, ?)", [req.body.firstName, req.body.lastName, req.body.email, req.body.password]).then(results => {
         return res.status(200).json({success: true});
     });
 });

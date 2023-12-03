@@ -431,11 +431,11 @@ INSERT INTO moviebase.User (UserId, FirstName, LastName, Email, Password, Salt) 
 (5, 'Noah', 'Thomas', 'nbthomas@ncsu.edu', 'cdcd88e2edeeae0290e21bd339f0dcf4a7f210a61d325a00c11b81df23d22be6', '66901622c50a5ff32dd993fb43ab6833b0a5838085f8b2a8c7ccc09aa1fbf9e3');
 
 INSERT INTO moviebase.List (ListId, Name, Description, UserId) VALUES 
-(1, 'Brett\'s Watched Movies', 'This is a list of movies Brett has watched.', 1),
-(2, 'Chris\' Watched Movies', 'This is a list of movies Chris has watched.', 2),
-(3, 'Jaden\'s Watched Movies', 'This is a list of movies Jaden has watched.', 3),
-(4, 'Michael\'s Watched Movies', 'This is a list of movies Michael has watched.', 4),
-(5, 'Noah\'s Watched Movies', 'This is a list of movies Noah has watched.', 5);
+(1, 'Watchlist', 'This is a list of media you have watched.', 1),
+(2, 'Watchlist', 'This is a list of media you have watched.', 2),
+(3, 'Watchlist', 'This is a list of media you have watched.', 3),
+(4, 'Watchlist', 'This is a list of media you have watched.', 4),
+(5, 'Watchlist', 'This is a list of media you have watched.', 5);
 
 INSERT INTO moviebase.Media (MediaId, Title, Description, ReleaseDate, RunTime, AverageRating, Poster, MediaTypeId, PublisherId, LanguageId, AgeRatingId) VALUES
 (1, 'The Lost City', 'A thrilling adventure in a mysterious city', '2023-02-10', 3600000, 8.0, 'https://i.imgur.com/kLhG8In.jpg', 1, 5, 1, 1),

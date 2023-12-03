@@ -45,89 +45,89 @@ DELIMITER ;
 
 -- ---
 -- Searches for media given the search type, search value, and optional aggregation type.
--- Returns resulting movies that match the search.
+-- Returns resulting media that match the search.
 -- ---
 DELIMITER //
 CREATE PROCEDURE Search (IN searchType VARCHAR(20), IN searchValue VARCHAR(100), IN aggregationType VARCHAR(2))
 BEGIN
 	-- Search by Title
-	IF searchType = 'Title' THEN
+	IF LOWER(searchType) = LOWER('Title') THEN
 		SET searchValue = CONCAT('%', searchValue, '%');
-		SELECT * 
+		SELECT Media.MediaId, Media.Title, Media.Description, Media.ReleaseDate, Media.RunTime, Media.AverageRating, Media.Poster, Media.MediaTypeId, Media.PublisherId, Media.LanguageId, Media.AgeRatingId
 		FROM moviebase.Media
 		WHERE LOWER(Title) LIKE LOWER(searchValue);
 	-- Search by ReleaseDate (=)
-	ELSEIF searchType = 'ReleaseDate' AND aggregationType IS NULL THEN
-		SELECT * 
+	ELSEIF LOWER(searchType) = LOWER('ReleaseDate') AND aggregationType IS NULL THEN
+		SELECT Media.MediaId, Media.Title, Media.Description, Media.ReleaseDate, Media.RunTime, Media.AverageRating, Media.Poster, Media.MediaTypeId, Media.PublisherId, Media.LanguageId, Media.AgeRatingId
 		FROM moviebase.Media
 		WHERE ReleaseDate = CONVERT(searchValue, DATE);
 	-- Search by ReleaseDate (<=)
-	ELSEIF searchType = 'ReleaseDate' AND aggregationType = '<=' THEN
-		SELECT * 
+	ELSEIF LOWER(searchType) = LOWER('ReleaseDate') AND aggregationType = '<=' THEN
+		SELECT Media.MediaId, Media.Title, Media.Description, Media.ReleaseDate, Media.RunTime, Media.AverageRating, Media.Poster, Media.MediaTypeId, Media.PublisherId, Media.LanguageId, Media.AgeRatingId
 		FROM moviebase.Media
 		WHERE ReleaseDate <= CONVERT(searchValue, DATE);
 	-- Search by ReleaseDate (>=)
-	ELSEIF searchType = 'ReleaseDate' AND aggregationType = '>=' THEN
-		SELECT * 
+	ELSEIF LOWER(searchType) = LOWER('ReleaseDate') AND aggregationType = '>=' THEN
+		SELECT Media.MediaId, Media.Title, Media.Description, Media.ReleaseDate, Media.RunTime, Media.AverageRating, Media.Poster, Media.MediaTypeId, Media.PublisherId, Media.LanguageId, Media.AgeRatingId
 		FROM moviebase.Media
 		WHERE ReleaseDate >= CONVERT(searchValue, DATE);
 	-- Search by RunTime (=)
-	ELSEIF searchType = 'RunTime' AND aggregationType IS NULL THEN
-		SELECT * 
+	ELSEIF LOWER(searchType) = LOWER('RunTime') AND aggregationType IS NULL THEN
+		SELECT Media.MediaId, Media.Title, Media.Description, Media.ReleaseDate, Media.RunTime, Media.AverageRating, Media.Poster, Media.MediaTypeId, Media.PublisherId, Media.LanguageId, Media.AgeRatingId
 		FROM moviebase.Media
 		WHERE RunTime = CONVERT(searchValue, SIGNED);
 	-- Search by RunTime (<=)
-	ELSEIF searchType = 'RunTime' AND aggregationType = '<=' THEN
-		SELECT * 
+	ELSEIF LOWER(searchType) = LOWER('RunTime') AND aggregationType = '<=' THEN
+		SELECT Media.MediaId, Media.Title, Media.Description, Media.ReleaseDate, Media.RunTime, Media.AverageRating, Media.Poster, Media.MediaTypeId, Media.PublisherId, Media.LanguageId, Media.AgeRatingId
 		FROM moviebase.Media
 		WHERE RunTime <= CONVERT(searchValue, SIGNED);
 	-- Search by RunTime (>=)
-	ELSEIF searchType = 'RunTime' AND aggregationType = '>=' THEN
-		SELECT * 
+	ELSEIF LOWER(searchType) = LOWER('RunTime') AND aggregationType = '>=' THEN
+		SELECT Media.MediaId, Media.Title, Media.Description, Media.ReleaseDate, Media.RunTime, Media.AverageRating, Media.Poster, Media.MediaTypeId, Media.PublisherId, Media.LanguageId, Media.AgeRatingId
 		FROM moviebase.Media
 		WHERE RunTime >= CONVERT(searchValue, SIGNED);
 	-- Search by AverageRating (=)
-	ELSEIF searchType = 'AverageRating' AND aggregationType IS NULL THEN
-		SELECT * 
+	ELSEIF LOWER(searchType) = LOWER('AverageRating') AND aggregationType IS NULL THEN
+		SELECT Media.MediaId, Media.Title, Media.Description, Media.ReleaseDate, Media.RunTime, Media.AverageRating, Media.Poster, Media.MediaTypeId, Media.PublisherId, Media.LanguageId, Media.AgeRatingId
 		FROM moviebase.Media
 		WHERE AverageRating = CONVERT(searchValue, DECIMAL(3, 1));
 	-- Search by AverageRating (<=)
-	ELSEIF searchType = 'AverageRating' AND aggregationType = '<=' THEN
-		SELECT * 
+	ELSEIF LOWER(searchType) = LOWER('AverageRating') AND aggregationType = '<=' THEN
+		SELECT Media.MediaId, Media.Title, Media.Description, Media.ReleaseDate, Media.RunTime, Media.AverageRating, Media.Poster, Media.MediaTypeId, Media.PublisherId, Media.LanguageId, Media.AgeRatingId
 		FROM moviebase.Media
 		WHERE AverageRating <= CONVERT(searchValue, DECIMAL(3, 1));
 	-- Search by AverageRating (>=)
-	ELSEIF searchType = 'AverageRating' AND aggregationType = '>=' THEN
-		SELECT * 
+	ELSEIF LOWER(searchType) = LOWER('AverageRating') AND aggregationType = '>=' THEN
+		SELECT Media.MediaId, Media.Title, Media.Description, Media.ReleaseDate, Media.RunTime, Media.AverageRating, Media.Poster, Media.MediaTypeId, Media.PublisherId, Media.LanguageId, Media.AgeRatingId
 		FROM moviebase.Media
 		WHERE AverageRating >= CONVERT(searchValue, DECIMAL(3, 1));
 	-- Search by MediaType
-	ELSEIF searchType = 'MediaType' THEN
+	ELSEIF LOWER(searchType) = LOWER('MediaType') THEN
 		SET searchValue = CONCAT('%', searchValue, '%');
-		SELECT *
+		SELECT Media.MediaId, Media.Title, Media.Description, Media.ReleaseDate, Media.RunTime, Media.AverageRating, Media.Poster, Media.MediaTypeId, Media.PublisherId, Media.LanguageId, Media.AgeRatingId
 		FROM moviebase.Media
 		JOIN moviebase.MediaType
 		ON Media.MediaTypeId = MediaType.MediaTypeId
 		WHERE LOWER(MediaType.Name) LIKE LOWER(searchValue);
 	-- Search by Publisher
-	ELSEIF searchType = 'Publisher' THEN
+	ELSEIF LOWER(searchType) = LOWER('Publisher') THEN
 		SET searchValue = CONCAT('%', searchValue, '%');
-		SELECT *
+		SELECT Media.MediaId, Media.Title, Media.Description, Media.ReleaseDate, Media.RunTime, Media.AverageRating, Media.Poster, Media.MediaTypeId, Media.PublisherId, Media.LanguageId, Media.AgeRatingId
 		FROM moviebase.Media
 		JOIN moviebase.Publisher
 		ON Media.PublisherId = Publisher.PublisherId
 		WHERE LOWER(Publisher.Name) LIKE LOWER(searchValue);
 	-- Search by Language
-	ELSEIF searchType = 'Language' THEN
+	ELSEIF LOWER(searchType) = LOWER('Language') THEN
 		SET searchValue = CONCAT('%', searchValue, '%');
-		SELECT *
+		SELECT Media.MediaId, Media.Title, Media.Description, Media.ReleaseDate, Media.RunTime, Media.AverageRating, Media.Poster, Media.MediaTypeId, Media.PublisherId, Media.LanguageId, Media.AgeRatingId
 		FROM moviebase.Media
 		JOIN moviebase.Language
 		ON Media.LanguageId = Language.LanguageId
 		WHERE LOWER(Language.Name) LIKE LOWER(searchValue);
 	-- Search by AgeRating
-	ELSEIF searchType = 'AgeRating' THEN
-		SELECT *
+	ELSEIF LOWER(searchType) = LOWER('AgeRating') THEN
+		SELECT Media.MediaId, Media.Title, Media.Description, Media.ReleaseDate, Media.RunTime, Media.AverageRating, Media.Poster, Media.MediaTypeId, Media.PublisherId, Media.LanguageId, Media.AgeRatingId
 		FROM moviebase.Media
 		JOIN moviebase.AgeRating
 		ON Media.AgeRatingId = AgeRating.AgeRatingId
@@ -135,9 +135,9 @@ BEGIN
 		ON AgeRating.AgeRatingTypeId = AgeRatingType.AgeRatingTypeId
 		WHERE LOWER(AgeRatingType.Type) = LOWER(searchValue);
 	-- Search by CastCrew
-	ELSEIF searchType = 'CastCrew' THEN
+	ELSEIF LOWER(searchType) = LOWER('CastCrew') THEN
 		SET searchValue = CONCAT('%', searchValue, '%');
-		SELECT *
+		SELECT DISTINCT Media.MediaId, Media.Title, Media.Description, Media.ReleaseDate, Media.RunTime, Media.AverageRating, Media.Poster, Media.MediaTypeId, Media.PublisherId, Media.LanguageId, Media.AgeRatingId
 		FROM moviebase.Media
 		JOIN moviebase.MediaCastCrew
 		ON Media.MediaId = MediaCastCrew.MediaId
@@ -147,9 +147,9 @@ BEGIN
 		ON CastCrew.CastCrewTypeId = CastCrewType.CastCrewTypeId
 		WHERE LOWER(CONCAT(CastCrew.FirstName, ' ', CastCrew.LastName)) LIKE LOWER(searchValue) OR LOWER(CastCrew.FirstName) LIKE LOWER(searchValue) OR LOWER(CastCrew.LastName) LIKE LOWER(searchValue);
 	-- Search by Genre
-	ELSEIF searchType = 'Genre' THEN
+	ELSEIF LOWER(searchType) = LOWER('Genre') THEN
 		SET searchValue = CONCAT('%', searchValue, '%');
-		SELECT *
+		SELECT Media.MediaId, Media.Title, Media.Description, Media.ReleaseDate, Media.RunTime, Media.AverageRating, Media.Poster, Media.MediaTypeId, Media.PublisherId, Media.LanguageId, Media.AgeRatingId
 		FROM moviebase.Media
 		JOIN moviebase.MediaGenre
 		ON Media.MediaId = MediaGenre.MediaId
@@ -157,9 +157,9 @@ BEGIN
 		ON MediaGenre.GenreId = Genre.GenreId
 		WHERE LOWER(Genre.Name) LIKE LOWER(searchValue);
 	-- Search by StreamingService
-	ELSEIF searchType = 'StreamingService' THEN
+	ELSEIF LOWER(searchType) = LOWER('StreamingService') THEN
 		SET searchValue = CONCAT('%', searchValue, '%');
-		SELECT *
+		SELECT Media.MediaId, Media.Title, Media.Description, Media.ReleaseDate, Media.RunTime, Media.AverageRating, Media.Poster, Media.MediaTypeId, Media.PublisherId, Media.LanguageId, Media.AgeRatingId
 		FROM moviebase.Media
 		JOIN moviebase.MediaStreamingService
 		ON Media.MediaId = MediaStreamingService.MediaId

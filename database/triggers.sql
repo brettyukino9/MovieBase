@@ -6,7 +6,7 @@ CREATE TRIGGER CreateUserList
 AFTER INSERT ON moviebase.User
 FOR EACH ROW
 BEGIN
-	INSERT INTO moviebase.List (Name, Description, UserId) values ('Movie List', 'This is a list of movies.', NEW.UserId);
+	INSERT INTO moviebase.List (Name, Description, UserId) values ('Watchlist', 'This is a list of media you have watched.', NEW.UserId);
 END;
 //
 DELIMITER ;

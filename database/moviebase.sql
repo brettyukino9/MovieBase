@@ -26,8 +26,8 @@ CREATE TABLE moviebase.User (
   `FirstName` VARCHAR(40) NOT NULL,
   `LastName` VARCHAR(40) NOT NULL,
   `Email` VARCHAR(60) NOT NULL,
-  `Password` VARCHAR(100) NOT NULL,
-  `Salt` VARCHAR(4) NOT NULL,
+  `Password` VARCHAR(256) NOT NULL,
+  `Salt` VARCHAR(256) NOT NULL,
   PRIMARY KEY (`UserId`)
 );
 
@@ -424,40 +424,40 @@ INSERT INTO moviebase.AgeRating (AgeRatingId, Description, AgeRatingTypeId) VALU
 (20, 'Strong Language, Intense Adult Themes', 4);
 
 INSERT INTO moviebase.User (UserId, FirstName, LastName, Email, Password, Salt) VALUES 
-(1, 'Brett', 'Reier', 'bpreier@ncsu.edu', 'password', '0000'),
-(2, 'Chris', 'Zavala', 'czavala2@ncsu.edu', 'password', '0000'),
-(3, 'Jaden', 'Jenkins', 'jajenki6@ncsu.edu', 'password', '0000'),
-(4, 'Michael', 'Abrams', 'msabrams@ncsu.edu', 'password', '0000'),
-(5, 'Noah', 'Thomas', 'nbthomas@ncsu.edu', 'password', '0000');
+(1, 'Brett', 'Reier', 'bpreier@ncsu.edu', 'd2ffff9db3c6a2b8b5f9527d0430618440ede421d39687f710d46047079868c1', 'd463f0488621c6d76dbdc0f3bf9d1014ce9e77a498c65a1ba1a0157b42a22aba'),
+(2, 'Chris', 'Zavala', 'czavala2@ncsu.edu', 'da9ebb6aa5f07cb2dd7b0658e765df5e711cc9e7a291bed4ac75a2738ffd7da6', '606006c46fa59fd29ff88917f05e52b2a4602f40272f469efd8119f944da44ef'),
+(3, 'Jaden', 'Jenkins', 'jajenki6@ncsu.edu', '1c9fb255186e825191d400abc6c365aee6a0276e3f02cdc6a3d2941ec3089299', 'b56e03deba5fc5200545cd673db63ea888b433d64e3dccb73f50c7134ce46b8e'),
+(4, 'Michael', 'Abrams', 'msabrams@ncsu.edu', '23e59ea0cfd884a6e636f09ce4c05bd75d6504400778f61a37392461ef0d2cb5', '54c608dec2e748157fc666815d3716b7c6f4e363c51552ad9c91cfe27b7c0b90'),
+(5, 'Noah', 'Thomas', 'nbthomas@ncsu.edu', 'cdcd88e2edeeae0290e21bd339f0dcf4a7f210a61d325a00c11b81df23d22be6', '66901622c50a5ff32dd993fb43ab6833b0a5838085f8b2a8c7ccc09aa1fbf9e3');
 
 INSERT INTO moviebase.List (ListId, Name, Description, UserId) VALUES 
-(1, 'Brett\'s Watched Movies', 'This is a list of movies Brett has watched.', 1),
-(2, 'Chris\' Watched Movies', 'This is a list of movies Chris has watched.', 2),
-(3, 'Jaden\'s Watched Movies', 'This is a list of movies Jaden has watched.', 3),
-(4, 'Michael\'s Watched Movies', 'This is a list of movies Michael has watched.', 4),
-(5, 'Noah\'s Watched Movies', 'This is a list of movies Noah has watched.', 5);
+(1, 'Watchlist', 'This is a list of media you have watched.', 1),
+(2, 'Watchlist', 'This is a list of media you have watched.', 2),
+(3, 'Watchlist', 'This is a list of media you have watched.', 3),
+(4, 'Watchlist', 'This is a list of media you have watched.', 4),
+(5, 'Watchlist', 'This is a list of media you have watched.', 5);
 
 INSERT INTO moviebase.Media (MediaId, Title, Description, ReleaseDate, RunTime, AverageRating, Poster, MediaTypeId, PublisherId, LanguageId, AgeRatingId) VALUES
-(1, 'The Lost City', 'A thrilling adventure in a mysterious city', '2023-02-10', 3600000, 0.0, 'https://i.imgur.com/kLhG8In.jpg', 1, 5, 1, 2),
-(2, 'Galactic Odyssey', 'Space epic with intergalactic battles', '2023-05-15', 5400000, 0.0, 'https://i.imgur.com/ptndfHJ.jpg', 1, 2, 1, 4),
-(3, 'Timeless Love', 'A romantic tale transcending time and space', '2022-08-22', 7200000, 0.0, 'https://i.imgur.com/2o1z3NS.jpg', 1, 3, 1, 3),
-(4, 'Quantum Conundrum', 'Mind-bending sci-fi exploration', '2023-04-05', 9000000, 0.0, 'https://i.imgur.com/jzMETUO.jpg', 1, 2, 2, 2),
-(5, 'Hidden Realms', 'Discover the secrets of hidden realms', '2022-11-30', 10800000, 0.0, 'https://i.imgur.com/T7HR2Di.jpg', 1, 5, 3, 2),
-(6, 'Eternal Enigma', 'Mystery and suspense in a timeless setting', '2023-07-18', 900000, 0.0, 'https://i.imgur.com/p1K9wC6.jpg', 2, 5, 5, 3),
-(7, 'Beyond the Horizon', 'Exploration and adventure beyond known boundaries', '2022-03-08', 12600000, 0.0, 'https://i.imgur.com/1PopNpO.jpg', 1, 2, 1, 1),
-(8, 'Code Breakers', 'Thrilling espionage and code-breaking', '2023-01-12', 8100000, 0.0, 'https://i.imgur.com/pcPHXC7.jpg', 1, 1, 2, 3),
-(9, 'Dreamscape Chronicles', 'Journey through fantastical dreamscapes', '2022-06-25', 1800000, 0.0, 'https://i.imgur.com/7t32mNk.jpg', 2, 1, 3, 1),
-(10, 'Chronicles of Destiny', 'Epic saga of heroes and villains', '2023-09-20', 9900000, 0.0, 'https://i.imgur.com/jIRsQaX.jpg', 1, 5, 1, 3),
-(11, 'Lost in Translation', 'Hilarious comedy of linguistic misunderstandings', '2022-04-14', 7560000, 0.0, 'https://i.imgur.com/5SbCvbY.jpg', 1, 4, 1, 1),
-(12, 'Infinite Loop', 'Sci-fi adventure with time loops and paradoxes', '2023-11-08', 3600000, 0.0, 'https://i.imgur.com/qXp7oRC.jpg', 2, 2, 2, 3),
-(13, 'Whispers in the Dark', 'Suspenseful thriller set in a haunted mansion', '2022-09-17', 10080000, 0.0, 'https://i.imgur.com/XAX2Zzb.jpg', 1, 1, 4, 4),
-(14, 'Crimson Skies', 'Action-packed aerial battles in a dystopian future', '2023-03-27', 6300000, 0.0, 'https://i.imgur.com/1liMxwG.jpg', 1, 1, 2, 4),
-(15, 'Renaissance Riddles', 'Puzzle-solving adventure in the Renaissance era', '2022-12-03', 1800000, 0.0, 'https://i.imgur.com/YNZKwdL.jpg', 2, 5, 3, 3),
-(16, 'Neon Nights', 'Cyberpunk noir with neon-soaked cityscapes', '2023-06-10', 8280000, 0.0, 'https://i.imgur.com/rcIxz10.jpg', 1, 1, 1, 3),
-(17, 'The Enchanted Forest', 'Fantasy adventure through a magical forest', '2022-10-28', 9360000, 0.0, 'https://i.imgur.com/PeJbf5J.jpg', 1, 5, 5, 1),
-(18, 'Digital Mirage', 'Virtual reality thriller in a digital world', '2023-02-28', 3600000, 0.0, 'https://i.imgur.com/lpOxsg2.jpg', 2, 1, 2, 2),
-(19, 'Lost and Found', 'Heartwarming drama of self-discovery and friendship', '2022-07-11', 7920000, 0.0, 'https://i.imgur.com/rY4Qhck.jpg', 1, 3, 3, 2),
-(20, 'Spectral Shadows', 'Comical mystery with ghostly apparitions', '2023-10-15', 900000, 0.0, 'https://i.imgur.com/YknH26F.jpg', 2, 4, 4, 4);
+(1, 'The Lost City', 'A thrilling adventure in a mysterious city', '2023-02-10', 3600000, 8.0, 'https://i.imgur.com/kLhG8In.jpg', 1, 5, 1, 1),
+(2, 'Galactic Odyssey', 'Space epic with intergalactic battles', '2023-05-15', 5400000, 9.0, 'https://i.imgur.com/ptndfHJ.jpg', 1, 2, 1, 2),
+(3, 'Timeless Love', 'A romantic tale transcending time and space', '2022-08-22', 7200000, 6.0, 'https://i.imgur.com/2o1z3NS.jpg', 1, 3, 1, 3),
+(4, 'Quantum Conundrum', 'Mind-bending sci-fi exploration', '2023-04-05', 9000000, 7.0, 'https://i.imgur.com/jzMETUO.jpg', 1, 2, 2, 4),
+(5, 'Hidden Realms', 'Discover the secrets of hidden realms', '2022-11-30', 10800000, 8.0, 'https://i.imgur.com/T7HR2Di.jpg', 1, 5, 3, 5),
+(6, 'Eternal Enigma', 'Mystery and suspense in a timeless setting', '2023-07-18', 900000, 5.0, 'https://i.imgur.com/p1K9wC6.jpg', 2, 5, 5, 6),
+(7, 'Beyond the Horizon', 'Exploration and adventure beyond known boundaries', '2022-03-08', 12600000, 9.0, 'https://i.imgur.com/1PopNpO.jpg', 1, 2, 1, 7),
+(8, 'Code Breakers', 'Thrilling espionage and code-breaking', '2023-01-12', 8100000, 6.0, 'https://i.imgur.com/pcPHXC7.jpg', 1, 1, 2, 8),
+(9, 'Dreamscape Chronicles', 'Journey through fantastical dreamscapes', '2022-06-25', 1800000, 8.0, 'https://i.imgur.com/7t32mNk.jpg', 2, 1, 3, 9),
+(10, 'Chronicles of Destiny', 'Epic saga of heroes and villains', '2023-09-20', 9900000, 7.0, 'https://i.imgur.com/jIRsQaX.jpg', 1, 5, 1, 10),
+(11, 'Lost in Translation', 'Hilarious comedy of linguistic misunderstandings', '2022-04-14', 7560000, 4.0, 'https://i.imgur.com/5SbCvbY.jpg', 1, 4, 1, 11),
+(12, 'Infinite Loop', 'Sci-fi adventure with time loops and paradoxes', '2023-11-08', 3600000, 9.0, 'https://i.imgur.com/qXp7oRC.jpg', 2, 2, 2, 12),
+(13, 'Whispers in the Dark', 'Suspenseful thriller set in a haunted mansion', '2022-09-17', 10080000, 7.0, 'https://i.imgur.com/XAX2Zzb.jpg', 1, 1, 4, 13),
+(14, 'Crimson Skies', 'Action-packed aerial battles in a dystopian future', '2023-03-27', 6300000, 8.0, 'https://i.imgur.com/1liMxwG.jpg', 1, 1, 2, 14),
+(15, 'Renaissance Riddles', 'Puzzle-solving adventure in the Renaissance era', '2022-12-03', 1800000, 6.0, 'https://i.imgur.com/YNZKwdL.jpg', 2, 5, 3, 15),
+(16, 'Neon Nights', 'Cyberpunk noir with neon-soaked cityscapes', '2023-06-10', 8280000, 9.0, 'https://i.imgur.com/rcIxz10.jpg', 1, 1, 1, 16),
+(17, 'The Enchanted Forest', 'Fantasy adventure through a magical forest', '2022-10-28', 9360000, 7.0, 'https://i.imgur.com/PeJbf5J.jpg', 1, 5, 5, 17),
+(18, 'Digital Mirage', 'Virtual reality thriller in a digital world', '2023-02-28', 3600000, 8.0, 'https://i.imgur.com/lpOxsg2.jpg', 2, 1, 2, 18),
+(19, 'Lost and Found', 'Heartwarming drama of self-discovery and friendship', '2022-07-11', 7920000, 5.0, 'https://i.imgur.com/rY4Qhck.jpg', 1, 3, 3, 19),
+(20, 'Spectral Shadows', 'Comical mystery with ghostly apparitions', '2023-10-15', 900000, 3.0, 'https://i.imgur.com/YknH26F.jpg', 2, 4, 4, 20);
 
 INSERT INTO moviebase.Review (ReviewId, Description, Rating, MediaId, UserId) VALUES 
 (1, 'This thrilling adventure successfully combines mystery and excitement as characters delve into a mysterious city. The plot unfolds with unexpected twists and turns, keeping audiences engaged.', 8.0, 1, 1),

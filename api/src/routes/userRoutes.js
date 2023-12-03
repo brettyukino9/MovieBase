@@ -37,7 +37,7 @@ router.post('/login', async (req, res) => {
         return res.status(400).json({success: false, error: "Invalid email or password"});
     }
 
-    db.query("CALL VerifyUser(?, ?, isVerifiedUser); SELECT isVerifiedUser;", [req.body.email, req.body.password]).then(results => {
+    db.query("SET @isVerifiedUser = FALSE; CALL VerifyUser(?, ?, isVerifiedUser); SELECT @isVerifiedUser;", [req.body.email, req.body.password]).then(results => {
         if(results[0]) {
             db.query("SELECT * FROM User WHERE email = ?", [req.body.email]).then(results => {
                 startSession(req, res, results[0]);

@@ -39,7 +39,7 @@ function buildMediaCard(title, i) {
             </div>`;
 }
 function buildModal(movie, i) {
-    let ageRating = movie.AgeRatingId == 5 ? ageRatings[movie.AgeRatingId - 1] : 'UR';
+    let ageRatingId = movie.AgeRatingId;
     let averageRating = movie.AverageRating;
     let description = movie.Description;
     let language = languages[movie.LanguageId - 1].Name;
@@ -83,7 +83,7 @@ function buildModal(movie, i) {
                             </tr>
                             <tr>
                             <th scope="row">Age Rating</th>
-                            <td>${ageRating}</td>
+                            <td></td>
                             </tr>
                             <tr>
                             <th scope="row">Streaming Services</th>

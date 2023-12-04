@@ -9,11 +9,25 @@ module.exports = router;
 router.put('/', (req, res) => {
     const media = req.body;
 
+    // Get steaming service id
+    const streamingQuery = "SELECT StreamingServiceId FROM StreamingService WHERE StreamingServiceName = ?";
+
+    serviceId = db.query(streamingQuery, [media.streaming])
+
+    const genreQuery = "SELECT GenreId FROM Genre WHERE GenreName = ?";
+    genreId = db.query(genreQuery, [media.genre])
+
     const query = "INSERT INTO Media (Title, Description, ReleaseDate, RunTime, Poster, MediaTypeId, PublisherId, LanguageId, AgeRatingId) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
     
     db.query(query,[media.title, media.description, media.releaseDate, media.runTime, media.poster, media.mediaType, media.publisher, media.language, media.ageRating]).then(results => {
+        const mediaStreamingPairQuery = "INSERT INTO MediaStreamingService (MediaId, StreamingServiceId) VALUES (?, ?)";
+        db.query(mediaStreamingPairQuery, [results.insertId, serviceId]);
+        const mediaGenrePairQuery = "INSERT INTO MediaGenre (MediaId, GenreId) VALUES (?, ?)";
+        db.query(mediaGenrePairQuery, [results.insertId, genreId]);
         return res.status(200).json({data: results});
     });    
+
+    //
 
 });
 
@@ -27,4 +41,24 @@ router.get('/:mediaId', (req, res) => {
         return res.status(200).json({data: results});
     });
     
+});
+
+router.get('/:mediaId/genres', (req, res) => {
+    const mediaId = req.params.mediaId;
+
+    const query = "SELECT GenreName FROM Genre JOIN MediaGenre ON Genre.GenreId = MediaGenre.GenreId WHERE MediaGenre.MediaId = ?";
+    
+    db.query(query,[mediaId]).then(results => {
+        return res.status(200).json({data: results});
+    });
+});
+
+router.get('/:mediaId/streaming', (req, res) => {
+    const mediaId = req.params.mediaId;
+
+    const query = "SELECT StreamingServiceName FROM StreamingService JOIN MediaStreamingService ON StreamingService.StreamingServiceId = MediaStreamingService.StreamingServiceId WHERE MediaStreamingService.MediaId = ?";
+    
+    db.query(query,[mediaId]).then(results => {
+        return res.status(200).json({data: results});
+    });
 });

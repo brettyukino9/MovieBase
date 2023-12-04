@@ -7,6 +7,33 @@ module.exports = router;
 
 
 // Search
+router.get('/search', (req, res) => {
+    const stype = req.body.options;
+    const svalue = req.body.value;
+    const agg = req.body.aggType;
+
+    if(!stype || !svalue) {
+        return res.status(400).json({success: false, error: "Missing data"});
+    }
+
+    if(!agg) {
+        db.query("CALL Search(?, ?, NULL);", [stype, svalue]).then(results => {
+            return res.status(200).json({data: results});
+        });
+    } else {
+        db.query("CALL Search(?, ?, ?);", [stype, svalue, agg]).then(results => {
+            return res.status(200).json({data: results});
+        });
+    }
+    
+});
+
+//Get all Media
+router.get('/media', (res) => {
+    db.query("SELECT * FROM Media").then(results => {
+        return res.status(200).json({data: results});
+    });
+})
 
 // Get all Media Types
 router.get('/mediatype', (req, res) => {

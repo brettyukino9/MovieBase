@@ -59,129 +59,123 @@
         </div>
       </div>
     </nav>
-    <div id="card-container" class="d-flex flex-wrap w-100">
-        <div class="container m-5">
-        <div class="row">
-            <div class="col">
-            <div class="card" data-bs-toggle="modal" data-bs-target="#exampleModal" style="width: 18rem;">
+    <div class="container m-5 d-flex flex-wrap" id="card-container">
+        <div class="card m-5" data-bs-toggle="modal" data-bs-target="#exampleModal" style="width: 18rem;">
+            <img src="https://picsum.photos/300/200" class="card-img-top" alt="...">
+            <div class="card-body">
+            <h5 class="card-title">Star Wars</h5>
+            </div>
+        </div>
+    </div>
+    <div class="modal" id="exampleModal" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered modal-xl">
+        <div class="modal-content">
+        <div class="modal-body">
+            <div class="d-flex gap-3">
+            <div>
                 <img src="https://picsum.photos/300/200" class="card-img-top" alt="...">
-                <div class="card-body">
-                <h5 class="card-title">Star Wars</h5>
-                </div>
+                <table class="table">
+                <tbody>
+                    <tr>
+                    <th scope="row">Release Date</th>
+                    <td>Mark</td>
+                    </tr>
+                    <tr>
+                    <th scope="row">Runtime</th>
+                    <td>Jacob</td>
+                    </tr>
+                    <tr>
+                    <th scope="row">Media Type</th>
+                    <td>Larry the Bird</td>
+                    </tr>
+                    <tr>
+                    <th scope="row">Publisher</th>
+                    <td>Larry the Bird</td>
+                    </tr>
+                    <tr>
+                    <th scope="row">Language</th>
+                    <td>Larry the Bird</td>
+                    </tr>
+                    <tr>
+                    <th scope="row">Age Rating</th>
+                    <td>Larry the Bird</td>
+                    </tr>
+                    <tr>
+                    <th scope="row">Streaming Services</th>
+                    <td>Larry the Bird</td>
+                    </tr>
+                    <tr>
+                    <th scope="row">Director</th>
+                    <td>Larry the Bird</td>
+                    </tr>
+                    <tr>
+                    <th scope="row">Genres</th>
+                    <td>Larry the Bird</td>
+                    </tr>
+                </tbody>
+                </table>
             </div>
-            </div>
-        </div>
-        </div>
-        <div class="modal" id="exampleModal" tabindex="-1">
-        <div class="modal-dialog modal-dialog-centered modal-xl">
-            <div class="modal-content">
-            <div class="modal-body">
-                <div class="d-flex gap-3">
-                <div>
-                    <img src="https://picsum.photos/300/200" class="card-img-top" alt="...">
-                    <table class="table">
-                    <tbody>
-                        <tr>
-                        <th scope="row">Release Date</th>
-                        <td>Mark</td>
-                        </tr>
-                        <tr>
-                        <th scope="row">Runtime</th>
-                        <td>Jacob</td>
-                        </tr>
-                        <tr>
-                        <th scope="row">Media Type</th>
-                        <td>Larry the Bird</td>
-                        </tr>
-                        <tr>
-                        <th scope="row">Publisher</th>
-                        <td>Larry the Bird</td>
-                        </tr>
-                        <tr>
-                        <th scope="row">Language</th>
-                        <td>Larry the Bird</td>
-                        </tr>
-                        <tr>
-                        <th scope="row">Age Rating</th>
-                        <td>Larry the Bird</td>
-                        </tr>
-                        <tr>
-                        <th scope="row">Streaming Services</th>
-                        <td>Larry the Bird</td>
-                        </tr>
-                        <tr>
-                        <th scope="row">Director</th>
-                        <td>Larry the Bird</td>
-                        </tr>
-                        <tr>
-                        <th scope="row">Genres</th>
-                        <td>Larry the Bird</td>
-                        </tr>
-                    </tbody>
-                    </table>
+            <div class="d-flex flex-column w-100">
+                <div class="d-flex align-items-center justify-content-between me-5">
+                <h1>Movie Title</h1>
+                <h3><i class="fa-solid fa-star"></i> 9.7</h3>
                 </div>
-                <div class="d-flex flex-column w-100">
+                <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Doloremque eos illo earum in quam inventore minus amet, laborum adipisci dolores numquam, expedita magnam porro soluta eius. Sed laboriosam non, fugit cum dolorem commodi sunt earum provident dolor dolore at iure eum facere. Tempora nisi sed explicabo officiis alias voluptate amet!</p>
+                <h3>Reviews</h3>
+                <ul class="list-group reviews h-100">
+                <li class="list-group-item review-item">
                     <div class="d-flex align-items-center justify-content-between me-5">
-                    <h1>Movie Title</h1>
-                    <h3><i class="fa-solid fa-star"></i> 9.7</h3>
+                    <h5>msabrams</h5>
+                    <h5><i class="fa-solid fa-star"></i> 9.7</h5>
                     </div>
-                    <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Doloremque eos illo earum in quam inventore minus amet, laborum adipisci dolores numquam, expedita magnam porro soluta eius. Sed laboriosam non, fugit cum dolorem commodi sunt earum provident dolor dolore at iure eum facere. Tempora nisi sed explicabo officiis alias voluptate amet!</p>
-                    <h3>Reviews</h3>
-                    <ul class="list-group reviews h-100">
-                    <li class="list-group-item review-item">
-                        <div class="d-flex align-items-center justify-content-between me-5">
-                        <h5>msabrams</h5>
-                        <h5><i class="fa-solid fa-star"></i> 9.7</h5>
-                        </div>
-                        <p>Lorem ipsum dolor, sit amet consectetur adipisicing elit. At voluptas laboriosam nobis veniam culpa quas facilis quasi recusandae assumenda rerum molestiae et deserunt repellat eum, commodi accusamus quia est harum reiciendis sequi consequuntur quis atque non? Veniam quod aut odio. Quis sequi quia perferendis non qui. Facilis alias nam culpa.</p>
-                    </li> 
-                    <li class="list-group-item review-item">
-                        <div class="d-flex align-items-center justify-content-between me-5">
-                        <h5>msabrams</h5>
-                        <h5><i class="fa-solid fa-star"></i> 9.7</h5>
-                        </div>
-                        <p>Lorem ipsum dolor, sit amet consectetur adipisicing elit. At voluptas laboriosam nobis veniam culpa quas facilis quasi recusandae assumenda rerum molestiae et deserunt repellat eum, commodi accusamus quia est harum reiciendis sequi consequuntur quis atque non? Veniam quod aut odio. Quis sequi quia perferendis non qui. Facilis alias nam culpa.</p>
-                    </li> 
-                    <li class="list-group-item review-item">
-                        <div class="d-flex align-items-center justify-content-between me-5">
-                        <h5>msabrams</h5>
-                        <h5><i class="fa-solid fa-star"></i> 9.7</h5>
-                        </div>
-                        <p>Lorem ipsum dolor, sit amet consectetur adipisicing elit. At voluptas laboriosam nobis veniam culpa quas facilis quasi recusandae assumenda rerum molestiae et deserunt repellat eum, commodi accusamus quia est harum reiciendis sequi consequuntur quis atque non? Veniam quod aut odio. Quis sequi quia perferendis non qui. Facilis alias nam culpa.</p>
-                    </li> 
-                    <li class="list-group-item review-item">
-                        <div class="d-flex align-items-center justify-content-between me-5">
-                        <h5>msabrams</h5>
-                        <h5><i class="fa-solid fa-star"></i> 9.7</h5>
-                        </div>
-                        <p>Lorem ipsum dolor, sit amet consectetur adipisicing elit. At voluptas laboriosam nobis veniam culpa quas facilis quasi recusandae assumenda rerum molestiae et deserunt repellat eum, commodi accusamus quia est harum reiciendis sequi consequuntur quis atque non? Veniam quod aut odio. Quis sequi quia perferendis non qui. Facilis alias nam culpa.</p>
-                    </li> 
-                    <li class="list-group-item review-item">
-                        <div class="d-flex align-items-center justify-content-between me-5">
-                        <h5>msabrams</h5>
-                        <h5><i class="fa-solid fa-star"></i> 9.7</h5>
-                        </div>
-                        <p>Lorem ipsum dolor, sit amet consectetur adipisicing elit. At voluptas laboriosam nobis veniam culpa quas facilis quasi recusandae assumenda rerum molestiae et deserunt repellat eum, commodi accusamus quia est harum reiciendis sequi consequuntur quis atque non? Veniam quod aut odio. Quis sequi quia perferendis non qui. Facilis alias nam culpa.</p>
-                    </li> 
-                    <li class="list-group-item review-item">
-                        <div class="d-flex align-items-center justify-content-between me-5">
-                        <h5>msabrams</h5>
-                        <h5><i class="fa-solid fa-star"></i> 9.7</h5>
-                        </div>
-                        <p>Lorem ipsum dolor, sit amet consectetur adipisicing elit. At voluptas laboriosam nobis veniam culpa quas facilis quasi recusandae assumenda rerum molestiae et deserunt repellat eum, commodi accusamus quia est harum reiciendis sequi consequuntur quis atque non? Veniam quod aut odio. Quis sequi quia perferendis non qui. Facilis alias nam culpa.</p>
-                    </li> 
-                    </ul>
-                </div>
-                </div>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-primary">Watch Later</button>
-                <button type="button" class="btn btn-primary">Review</button>
+                    <p>Lorem ipsum dolor, sit amet consectetur adipisicing elit. At voluptas laboriosam nobis veniam culpa quas facilis quasi recusandae assumenda rerum molestiae et deserunt repellat eum, commodi accusamus quia est harum reiciendis sequi consequuntur quis atque non? Veniam quod aut odio. Quis sequi quia perferendis non qui. Facilis alias nam culpa.</p>
+                </li> 
+                <li class="list-group-item review-item">
+                    <div class="d-flex align-items-center justify-content-between me-5">
+                    <h5>msabrams</h5>
+                    <h5><i class="fa-solid fa-star"></i> 9.7</h5>
+                    </div>
+                    <p>Lorem ipsum dolor, sit amet consectetur adipisicing elit. At voluptas laboriosam nobis veniam culpa quas facilis quasi recusandae assumenda rerum molestiae et deserunt repellat eum, commodi accusamus quia est harum reiciendis sequi consequuntur quis atque non? Veniam quod aut odio. Quis sequi quia perferendis non qui. Facilis alias nam culpa.</p>
+                </li> 
+                <li class="list-group-item review-item">
+                    <div class="d-flex align-items-center justify-content-between me-5">
+                    <h5>msabrams</h5>
+                    <h5><i class="fa-solid fa-star"></i> 9.7</h5>
+                    </div>
+                    <p>Lorem ipsum dolor, sit amet consectetur adipisicing elit. At voluptas laboriosam nobis veniam culpa quas facilis quasi recusandae assumenda rerum molestiae et deserunt repellat eum, commodi accusamus quia est harum reiciendis sequi consequuntur quis atque non? Veniam quod aut odio. Quis sequi quia perferendis non qui. Facilis alias nam culpa.</p>
+                </li> 
+                <li class="list-group-item review-item">
+                    <div class="d-flex align-items-center justify-content-between me-5">
+                    <h5>msabrams</h5>
+                    <h5><i class="fa-solid fa-star"></i> 9.7</h5>
+                    </div>
+                    <p>Lorem ipsum dolor, sit amet consectetur adipisicing elit. At voluptas laboriosam nobis veniam culpa quas facilis quasi recusandae assumenda rerum molestiae et deserunt repellat eum, commodi accusamus quia est harum reiciendis sequi consequuntur quis atque non? Veniam quod aut odio. Quis sequi quia perferendis non qui. Facilis alias nam culpa.</p>
+                </li> 
+                <li class="list-group-item review-item">
+                    <div class="d-flex align-items-center justify-content-between me-5">
+                    <h5>msabrams</h5>
+                    <h5><i class="fa-solid fa-star"></i> 9.7</h5>
+                    </div>
+                    <p>Lorem ipsum dolor, sit amet consectetur adipisicing elit. At voluptas laboriosam nobis veniam culpa quas facilis quasi recusandae assumenda rerum molestiae et deserunt repellat eum, commodi accusamus quia est harum reiciendis sequi consequuntur quis atque non? Veniam quod aut odio. Quis sequi quia perferendis non qui. Facilis alias nam culpa.</p>
+                </li> 
+                <li class="list-group-item review-item">
+                    <div class="d-flex align-items-center justify-content-between me-5">
+                    <h5>msabrams</h5>
+                    <h5><i class="fa-solid fa-star"></i> 9.7</h5>
+                    </div>
+                    <p>Lorem ipsum dolor, sit amet consectetur adipisicing elit. At voluptas laboriosam nobis veniam culpa quas facilis quasi recusandae assumenda rerum molestiae et deserunt repellat eum, commodi accusamus quia est harum reiciendis sequi consequuntur quis atque non? Veniam quod aut odio. Quis sequi quia perferendis non qui. Facilis alias nam culpa.</p>
+                </li> 
+                </ul>
             </div>
             </div>
         </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            <button type="button" class="btn btn-primary">Watch Later</button>
+            <button type="button" class="btn btn-primary">Review</button>
         </div>
+        </div>
+    </div>
     </div>
   </body>
 </html>

@@ -63,3 +63,7 @@
     display: grid;
     grid-template-columns: 1fr 1fr;
 }
+
+.bg-primary {
+    background-color: var(--bs-primary) !important;
+}

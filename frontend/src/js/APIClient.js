@@ -11,5 +11,23 @@ export default {
   },
   fetchMedia: (mediaId) => {
     return HTTPClient.get(API_BASE + `/${mediaId}`);
+  },
+  fetchMediaTypes: () => {
+    return HTTPClient.get(API_BASE + `/search/mediatype`);
+  },
+  fetchAgeRatings: () => {
+    return HTTPClient.get(API_BASE + '/search/agerating');
+  },
+  fetchLanguages: () => {
+    return HTTPClient.get(API_BASE + '/search/language');
+  },
+  fetchStramingServices: () => {
+    return HTTPClient.get(API_BASE + '/search/streaming');
+  },
+  fetchGenres: () => {
+    return HTTPClient.get(API_BASE + '/search/genre');
+  },
+  fetchMediaGenres: (mediaId) => {
+    return HTTPClient.get(API_BASE + `/media/${mediaId}/genres}`);
   }
 }

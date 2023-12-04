@@ -45,7 +45,7 @@ CREATE TABLE moviebase.Media (
   `ReleaseDate` DATE NOT NULL,
   `RunTime` INT NOT NULL,
   `AverageRating` DECIMAL(3, 1) NOT NULL,
-  `Poster` BLOB NOT NULL,
+  `Poster` VARCHAR(500) NOT NULL,
   `MediaTypeId` INT NOT NULL,
   `PublisherId` INT NOT NULL,
   `LanguageId` INT NOT NULL,

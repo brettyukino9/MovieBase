@@ -30,26 +30,27 @@ let genreRequest = await api.fetchGenres();
 let genres = genreRequest.data.results;
 console.log(genres);
 
-function buildMediaCard(title, i) {
+function buildMediaCard(movie, i) {
     return `<div class="card m-5" data-bs-toggle="modal" data-bs-target="#modal${i}" style="width: 18rem;">
-                <img src="https://picsum.photos/300/200" class="card-img-top" alt="...">
+                <img src=${movie.Poster} class="card-img-top" alt="...">
                 <div class="card-body">
-                    <h5 class="card-title">${title}</h5>
+                    <h5 class="card-title">${movie.Title}</h5>
                 </div>
             </div>`;
 }
-function buildModal(movie, i) {
+
+async function buildModal(movie, i) {
     let ageRatingId = movie.AgeRatingId;
     let averageRating = movie.AverageRating;
     let description = movie.Description;
     let language = languages[movie.LanguageId - 1].Name;
     let mediaId = movie.MediaId;
     let mediaType = mediaTypes[movie.MediaTypeId - 1].Name;
-    let poster = movie.Poster;
     let publisherId = movie.PublisherId;
     let releaseDate = movie.ReleaseDate.slice(0, -14);
     let runTime = movie.RunTime / 60000;
     let title =  movie.Title;
+
     // let genres = await api.fetchMediaGenres(mediaId);
     // console.log(genres.data.results)
     return `<div class="modal" id="modal${i}" tabindex="-1">
@@ -58,7 +59,7 @@ function buildModal(movie, i) {
                 <div class="modal-body">
                     <div class="d-flex gap-3">
                     <div>
-                        <img src="https://picsum.photos/300/200" class="card-img-top" alt="...">
+                        <img src=${movie.Poster} id="movie-poster" class="card-img-top" alt="...">
                         <table class="table">
                         <tbody>
                             <tr>
@@ -170,7 +171,7 @@ let body = document.getElementById("card-container");
 
 for(const [key, value] of Object.entries(movies)) {
     console.log(value)
-    body.innerHTML += buildMediaCard(value.Title, mediaCount) + buildModal(value, mediaCount);
+    body.innerHTML += await buildMediaCard(value, mediaCount) + await buildModal(value, mediaCount);
     mediaCount++;
     col++;
 }

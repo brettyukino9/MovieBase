@@ -42,3 +42,23 @@ router.get('/:mediaId', (req, res) => {
     });
     
 });
+
+router.get('/:mediaId/genres', (req, res) => {
+    const mediaId = req.params.mediaId;
+
+    const query = "SELECT GenreName FROM Genre JOIN MediaGenre ON Genre.GenreId = MediaGenre.GenreId WHERE MediaGenre.MediaId = ?";
+    
+    db.query(query,[mediaId]).then(results => {
+        return res.status(200).json({data: results});
+    });
+});
+
+router.get('/:mediaId/streaming', (req, res) => {
+    const mediaId = req.params.mediaId;
+
+    const query = "SELECT StreamingServiceName FROM StreamingService JOIN MediaStreamingService ON StreamingService.StreamingServiceId = MediaStreamingService.StreamingServiceId WHERE MediaStreamingService.MediaId = ?";
+    
+    db.query(query,[mediaId]).then(results => {
+        return res.status(200).json({data: results});
+    });
+});

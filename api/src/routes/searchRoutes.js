@@ -29,7 +29,7 @@ router.get('/search', (req, res) => {
 });
 
 //Get all Media
-router.get('/media', (res) => {
+router.get('/media', async (req, res) => {
     db.query("SELECT * FROM Media").then(results => {
         return res.status(200).json({data: results});
     });

@@ -35,7 +35,7 @@ routes.get('/movie-collection', (_, res) => {
     res.sendFile(`${html_dir}movie-collection.html`);
 })
 
-routes.get('/movie', (_, res) => {
+routes.get('/movie/:media-id', (_, res) => {
     res.sendFile(`${html_dir}movie.html`);
 })
 

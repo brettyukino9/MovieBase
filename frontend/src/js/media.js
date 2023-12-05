@@ -30,6 +30,39 @@ let genreRequest = await api.fetchGenres();
 let genres = genreRequest.data.results;
 console.log(genres);
 
+async function submitReview(event, userId, mediaId, review_exists) {
+    // Prevent the form from submitting the traditional way
+    event.preventDefault();
+
+    // Access the form element using the event
+    const form = event.target;
+
+    // Access the input values using the form's elements property
+    const description = form.elements['review-description'].value;
+    const rating = form.elements['review-rating'].value;
+
+
+    console.log(description, rating, userId, mediaId, review_exists)
+    console.log("review exists", review_exists)
+    try {
+        if (review_exists > 0) {
+            // Update review
+            await api.updateReview(userId, mediaId, description, rating);
+        } else {
+            // Post review
+            await api.postReview(userId, mediaId, description, rating);
+        }
+
+        // Only reload after the asynchronous operation is complete
+        location.reload();
+    } catch (error) {
+        console.log(error);
+        // Handle errors here if needed
+    }
+
+    return false;
+}
+
 export function buildMediaCard(movie) {
     return `<div class="card m-5" data-bs-toggle="modal" data-bs-target="#modal${movie.MediaId}" style="width: 18rem;">
                 <img src=${movie.Poster} class="card-img-top" alt="...">
@@ -38,6 +71,27 @@ export function buildMediaCard(movie) {
                 </div>
             </div>`;
 }
+
+let body = document.getElementById("card-container");
+
+body.addEventListener('submit', function (event) {
+    // Check if the submitted form has the class 'create-review-form'
+    if (event.target.classList.contains('create-review-form')) {
+        // Prevent the form from submitting the traditional way
+        event.preventDefault();
+
+        // Retrieve the mediaId from the data attribute
+        const mediaId = event.target.getAttribute('data-media-id');
+
+        // Get if a review exists from the data attribute
+        const review_exists = event.target.getAttribute('data-review-exists');
+
+        console.log("got review exists event listener", review_exists)
+        // Call the submitReview function with the correct mediaId
+        submitReview(event, user.id, mediaId, review_exists);
+    }
+    return false;
+});
 
 export async function buildModal(movie, reviews) {
     let ageRating = `${movie.AgeRatingType}\n${movie.AgeRatingDescription}`;
@@ -55,6 +109,25 @@ export async function buildModal(movie, reviews) {
     let streamingServices = movie.StreamingService.replaceAll(',', '<br>');
     let title =  movie.Title;
     let reviewsText = '';
+
+    let initialReviewDescription = ""
+    let initialReviewRating;
+    let review_exists = 0;
+    // Get the review of the media
+    try {
+        const response = await api.fetchReview(user.id, mediaId);
+        if (response.data.results[0]) {
+            console.log("review:",response.data.results[0].Description);
+            const descriptionArray = response.data.results[0].Description.data;
+            let uint8Array = new Uint8Array(descriptionArray);
+            initialReviewDescription = new TextDecoder("utf-8").decode(uint8Array);
+            initialReviewRating = response.data.results[0].Rating;
+            review_exists = 1;
+        }
+    } catch (error) {
+        console.error(error);
+    }
+    
     for(const [key, value] of Object.entries(reviews)) {
         let userRequest = await api.fetchUserById(value.UserId);
         console.log(userRequest);
@@ -119,6 +192,21 @@ export async function buildModal(movie, reviews) {
                             </tr>
                         </tbody>
                         </table>
+                        <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title">My Review</h5>
+                            <form class="create-review-form" data-media-id="${mediaId}" data-review-exists="${review_exists}"> 
+                                <div class="mb-3">
+                                <label for="review-description" class="form-label">Description</label>
+                                <textarea class="form-control" id="review-description" rows="4" placeholder="Enter a description for your review">${initialReviewDescription}</textarea>                                </div>
+                            <div class="mb-3">
+                                <label for="review-rating" class="form-label">Rating</label>
+                                <input type="number" class="form-control" id="review-rating" placeholder="Enter a rating for your review" value="${initialReviewRating}">
+                            </div>
+                            <button type="submit" class="btn btn-primary" id="submit" >Submit</button>
+                            </form>
+                        </div>
+                    </div>
                     </div>
                     <div class="d-flex flex-column w-100">
                         <div class="d-flex align-items-center justify-content-between me-5">

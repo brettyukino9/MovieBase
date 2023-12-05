@@ -47,5 +47,16 @@ export default {
   },
   fetchSearch: (filter, search) => {
     return HTTPClient.post(API_BASE + `/search/search`, {filter, search});
+  },
+  postReview: (userId, mediaId, description, rating) => {
+    console.log("postReview " + mediaId + " " + userId + " " + description + " " + rating)
+    return HTTPClient.post(API_BASE + `/reviews/${userId}/${mediaId}`, {description, rating});
+  },
+  updateReview: (userId, mediaId, description, rating) => {
+    console.log("updateReview " + mediaId + " " + userId + " " + description + " " + rating)
+    return HTTPClient.put(API_BASE + `/reviews/${userId}/${mediaId}`, {description, rating});
+  },
+  fetchReview: (userId, mediaId) => {
+    return HTTPClient.get(API_BASE + `/reviews/${userId}/${mediaId}`);
   }
 }

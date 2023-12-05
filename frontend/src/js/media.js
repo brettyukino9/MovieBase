@@ -274,8 +274,6 @@ export async function loadMedia(movies, fromWatchList) {
     let mediaCount = 0;
     let body = document.getElementById("card-container");
     const userList = await APIClient.fetchUserList(user.id);
-    console.log("USER LIST");
-    console.log(userList);
 
     for(const [key, value] of Object.entries(movies)) {
         console.log(value)

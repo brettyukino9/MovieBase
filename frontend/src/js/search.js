@@ -63,8 +63,9 @@ try {
         console.log(error);
       })
     }
-  
+
     return false;
+
   })
 }
 catch {

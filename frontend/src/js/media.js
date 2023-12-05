@@ -30,7 +30,7 @@ let genreRequest = await api.fetchGenres();
 let genres = genreRequest.data.results;
 console.log(genres);
 
-function buildMediaCard(movie) {
+export function buildMediaCard(movie) {
     return `<div class="card m-5" data-bs-toggle="modal" data-bs-target="#modal${movie.MediaId}" style="width: 18rem;">
                 <img src=${movie.Poster} class="card-img-top" alt="...">
                 <div class="card-body">
@@ -39,9 +39,7 @@ function buildMediaCard(movie) {
             </div>`;
 }
 
-
-
-async function buildModal(movie, reviews) {
+export async function buildModal(movie) {
     let ageRating = `${movie.AgeRatingType}\n${movie.AgeRatingDescription}`;
     let averageRating = movie.AverageRating;
     let castCrew = movie.CastCrew.replaceAll(',', '<br>');
@@ -143,22 +141,36 @@ async function buildModal(movie, reviews) {
             </div>
             </div>`
 }
-// Create a card and modal for each media entry
-let col = 0;
-let mediaCount = 0;
-let body = document.getElementById("card-container");
 
-for(const [key, value] of Object.entries(movies)) {
-    console.log(value)
-    let mediaResponse = await api.fetchMedia(value.MediaId);
-    let media = mediaResponse.data.results[0];
-    let reviewResponse = await api.fetchReviews(value.MediaId);
-    let reviews = reviewResponse.data.results;
-    // console.log(reviews);
-    // console.log(media);
-    let modal = await buildModal(media, reviews);
-    let card = buildMediaCard(media);
-    body.innerHTML += card + modal;
-    mediaCount++;
-    col++;
+function clearMedia() { 
+    const body = document.getElementById("card-container");
+
+    while(body.hasChildNodes()) {
+        body.removeChild(body.childNodes[0]);
+    }
 }
+
+export async function loadMedia(movies) {
+    
+    clearMedia();
+
+    // Create a card and modal for each media entry
+    let col = 0;
+    let mediaCount = 0;
+    let body = document.getElementById("card-container");
+
+    for(const [key, value] of Object.entries(movies)) {
+        console.log(value)
+        let mediaResponse = await api.fetchMedia(value.MediaId);
+        let media = mediaResponse.data.results[0];
+        let reviewsResponse = await api.fetchReviews(value.MediaId);
+        let reviews = reviewsResponse.data.results;
+        // console.log(media);
+        // console.log(reviews);
+        body.innerHTML += buildMediaCard(media) + buildModal(media);
+        mediaCount++;
+        col++;
+    }
+}
+
+loadMedia(movies);

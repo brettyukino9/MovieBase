@@ -7,9 +7,9 @@ module.exports = router;
 
 
 // Search
-router.get('/search', (req, res) => {
-    const stype = req.body.options;
-    const svalue = req.body.value;
+router.post('/search', (req, res) => {
+    const stype = req.body.filter;
+    const svalue = req.body.search;
     const agg = req.body.aggType;
 
     if(!stype || !svalue) {
@@ -18,11 +18,11 @@ router.get('/search', (req, res) => {
 
     if(!agg) {
         db.query("CALL Search(?, ?, NULL);", [stype, svalue]).then(results => {
-            return res.status(200).json({data: results});
+            return res.status(200).json({data: results.results[0]});
         });
     } else {
         db.query("CALL Search(?, ?, ?);", [stype, svalue, agg]).then(results => {
-            return res.status(200).json({data: results});
+            return res.status(200).json({data: results.results[0]});
         });
     }
     

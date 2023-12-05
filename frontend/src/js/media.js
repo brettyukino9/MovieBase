@@ -308,7 +308,7 @@ export async function loadMedia(movies, fromWatchList) {
         modal._element.addEventListener('hidden.bs.modal', async function () {
             if(fromWatchList) {
                 const response = await APIClient.fetchUserList(user.id);
-                loadMedia(response, true)
+                await loadMedia(response, true)
             }
         });
 

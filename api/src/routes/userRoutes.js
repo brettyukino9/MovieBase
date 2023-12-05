@@ -7,28 +7,45 @@ const {checkSession, stopSession, startSession} = require('../token.js');
 module.exports = router;
 
 // Create user vaildates the data and returns a success boolean
-router.post('/createAccount', async (req,res) => {
+router.post('/createAccount', (req,res) => {
     if(!req.body.firstName || !req.body.lastName || !req.body.email || !req.body.password) {
         return res.status(400).json({success: false, error: "Missing data"});
     }
-
-    if(req.body.email.indexOf('@') === -1 || req.body.email.indexOf('.') === -1) {
+    else if(req.body.email.indexOf('@') === -1 || req.body.email.indexOf('.') === -1) {
         return res.status(400).json({success: false, error: "Please enter a valid email"});
     }
-
-    if(req.body.password.length > 100) {
+    else if(req.body.password.length > 100) {
         return res.status(400).json({success: false, error: "Please make password less than 100 characters"});
     }
+    else {
+        db.query("SELECT email FROM User WHERE email = (?)", [req.body.email])
+        .then(response => {
+            if (response.results.length === 0) {
+                // Email not found, proceed with user creation
+                return db.query("CALL CreateUser(?, ?, ?, ?)", [req.body.firstName, req.body.lastName, req.body.email, req.body.password]);
+            }
+    
+            throw new Error("Email already registered with the system");
+    
+        })
+        .then(_ => {
+            // Send a success response
+            res.status(200).json({ success: true });
+        })
+        .catch(error => {
+            // Handle errors
+            console.error(error);
+            res.status(400).json({ success: false, error: error.message || "Internal server error" });
+        });
+    }
 
-    db.query("CALL CreateUser(?, ?, ?, ?)", [req.body.firstName, req.body.lastName, req.body.email, req.body.password]).then(results => {
-        return res.status(200).json({success: true});
-    });
+
 });
 
 /**
  * API Method for logging in to the system
  */
-router.post('/login', async (req, res) => {
+router.post('/login', (req, res) => {
     if(!req.body.email || !req.body.password) {
         return res.status(400).json({success: false, error: "Missing data"});
     }
@@ -37,16 +54,28 @@ router.post('/login', async (req, res) => {
         return res.status(400).json({success: false, error: "Invalid email or password"});
     }
 
-    db.query("SET @isVerifiedUser = FALSE; CALL VerifyUser(?, ?, @isVerifiedUser); SELECT @isVerifiedUser;", [req.body.email, req.body.password]).then(results => {
-        if(results[0]) {
-            db.query("SELECT * FROM User WHERE email = ?", [req.body.email]).then(results => {
-                startSession(req, res, results[0]);
-                return res.status(200).json({success: true});
-            });
-        } else {
-            return res.status(400).json({success: false, error: "Invalid email or password"});
-        }
-
+    db.query("SET @isVerifiedUser = FALSE;", [])
+    .then(() => {
+      // Call stored procedure
+      return db.query("CALL VerifyUser(?, ?, @isVerifiedUser);", [req.body.email, req.body.password]);
+    })
+    .then(() => {
+      // Retrieve the value of the variable
+      return db.query("SELECT @isVerifiedUser as isVerifiedUser;", []);
+    })
+    .then((results) => {
+      if (results.results[0].isVerifiedUser) {
+        startSession(req, res, req.body.email);
+        return res.status(200).json({ success: true });
+      } else {
+        // User is not verified, return an error response
+        return res.status(400).json({ success: false, error: "Invalid email or password" });
+      }
+    })
+    .catch((error) => {
+      // Handle errors
+      console.error(error);
+      return res.status(500).json({ success: false, error: "Internal server error" });
     });
 
 });
@@ -77,21 +106,12 @@ router.get('/test', (req, res) => {
 // Get Profile Info
 router.get('/:userId', (req, res) => {
     const userId = req.params.userId;
-    console.log(userId);
-    
     const query = "SELECT * FROM User WHERE userId = ?";
 
     // TO DO: Implement security measures
 
     db.query(query,[userId]).then(results => {
-        let user = results.results[0]
-        let data = {
-            UserId: user.UserId,
-            FirstName: user.FirstName,
-            LastName: user.LastName,
-            Email: user.Email,
-        }
-        return res.status(200).json(JSON.stringify(data));
+        return res.status(200).json({data: results});
     });
     
 });
@@ -147,5 +167,3 @@ router.put('/password/:userId', (req, res) => {
     });
     
 });
-
-

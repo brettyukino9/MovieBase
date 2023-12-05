@@ -20,6 +20,15 @@ const loadSearchDropdown = () => {
   document.querySelector(".query-filter").textContent = QUERY_OPTIONS[0];
 }
 
+document.getElementById("logout-item").addEventListener("click", () => {
+  APIClient.logout().then(_ => {
+    document.location = '/signin'
+  })
+  .catch(error => {
+    console.log(error);
+  })
+})
+
 document.getElementById("search-bar").addEventListener("keydown", (event) => {
   if (event.key === 'Enter') {
     // Prevent the default form submission behavior

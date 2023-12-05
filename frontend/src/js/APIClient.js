@@ -6,6 +6,15 @@ export default {
   createAccount: (firstName, lastName, email, password) => {
     return HTTPClient.post(API_BASE + '/users/createAccount', {firstName, lastName, email, password})
   },
+  currentUser: () => {
+    return HTTPClient.get(API_BASE + '/users/getCurrentUser');
+  },
+  login: (email, password) => {
+    return HTTPClient.post(API_BASE + '/users/login', {email, password});
+  },
+  logout: () => {
+    return HTTPClient.post(API_BASE + '/users/logout');
+  },
   fetchAllMedia: async () => {
     return HTTPClient.get(API_BASE + '/search/media')
   },

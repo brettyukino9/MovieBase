@@ -1,4 +1,5 @@
 import api from "./APIClient.js"
+import HTMLElementBuilder from "./HTMLElementBuilder.js";
 
 const ROWSTART = '<div class="row">';
 
@@ -57,7 +58,8 @@ export async function buildModal(movie, reviews) {
     let reviewsText = '';
     for(const [key, value] of Object.entries(reviews)) {
         let userRequest = await api.fetchUserById(value.UserId);
-        let user = JSON.parse(userRequest);
+        console.log(userRequest);
+        let user = userRequest.data.results[0];
         let uint8Array = new Uint8Array(value.Description.data);
         let initialDescription = new TextDecoder("utf-8").decode(uint8Array);
         console.log(initialDescription);
@@ -134,7 +136,7 @@ export async function buildModal(movie, reviews) {
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                    <button type="button" class="btn btn-primary">Watch Later</button>
+                    <button id="watch-later-${movie.MediaId}" class="btn btn-primary"><i class="fa-regular fa-clock"></i></button>
                     <button type="button" class="btn btn-primary">Review</button>
                 </div>
                 </div>
@@ -165,14 +167,30 @@ export async function loadMedia(movies) {
         let media = mediaResponse.data.results[0];
         let reviewsResponse = await api.fetchReviews(value.MediaId);
         let reviews = reviewsResponse.data.results;
-        // console.log(media);
-        // console.log(reviews);
-        let card = buildMediaCard(media);
-        let modal = await buildModal(media, reviews);
-        body.innerHTML += card + modal;
+
+        body.insertAdjacentHTML('beforeend', buildMediaCard(media));
+        body.insertAdjacentHTML('beforeend', await buildModal(media, reviews));
+
+        document.getElementById(`watch-later-${media.MediaId}`).addEventListener("click", event => {
+            const watchLaterBtn = document.getElementById(`watch-later-${media.MediaId}`);
+            // Get the <i> element within the button
+            const iconElement = watchLaterBtn.querySelector('i');
+            const hasClockIcon = iconElement.classList.contains('fa-regular');
+            watchLaterBtn.removeChild(watchLaterBtn.children[0]);
+
+            if(hasClockIcon) {
+                const xIcon = new HTMLElementBuilder('i').setAttribute('class', 'fa-solid fa-x').build();
+                watchLaterBtn.appendChild(xIcon);
+            }
+            else {
+                const clockIcon = new HTMLElementBuilder('i').setAttribute('class', 'fa-regular fa-clock').build();
+                watchLaterBtn.appendChild(clockIcon);
+            }
+        })
+
         mediaCount++;
         col++;
     }
 }
 
-loadMedia(movies)
+await loadMedia(movies)

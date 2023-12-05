@@ -12,8 +12,3 @@ label {
     font-size: large;
     margin-top: 10px;
 }
-
-#signin-btn {
-    grid-column-start: 1;
-    grid-column-end: 3;
-}

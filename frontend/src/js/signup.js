@@ -15,8 +15,12 @@ function handleCreateUser(event) {
     const email = form.elements['email'].value;
     const password = form.elements['password'].value;
 
-    APIClient.createAccount(firstName, lastName, email, password).then(response => {
-        console.log(response);
+    APIClient.createAccount(firstName, lastName, email, password).then(_ => {
+        APIClient.login(email, password).then(userData => {
+            console.log(userData);
+            localStorage.setItem('user', JSON.stringify(userData.user));
+            document.location = '/'
+        })
     })
     .catch(error => {
         console.log(error);

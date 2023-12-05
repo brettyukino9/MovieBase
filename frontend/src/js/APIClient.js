@@ -58,5 +58,14 @@ export default {
   },
   fetchReview: (userId, mediaId) => {
     return HTTPClient.get(API_BASE + `/reviews/${userId}/${mediaId}`);
+  },
+  addWatchList: (userId, mediaId) => {
+    return HTTPClient.post(API_BASE + `/lists/${userId}/watchlist`, {mediaId});
+  },
+  removeWatchList: (userId, mediaId) => {
+    return HTTPClient.delete(API_BASE + `/lists/${userId}/watchlist/${mediaId}`);
+  },
+  fetchUserList: (userId) => {
+    return HTTPClient.get(API_BASE + `/lists/${userId}`);
   }
 }

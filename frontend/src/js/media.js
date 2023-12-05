@@ -62,6 +62,32 @@ async function submitReview(event, userId, mediaId, review_exists) {
 
     return false;
 }
+function toggleWatchList(media) {
+    const watchLaterBtn = document.getElementById(`watch-later-${media.MediaId}`);
+    // Get the <i> element within the button
+    const iconElement = watchLaterBtn.querySelector('i');
+    const hasClockIcon = iconElement.classList.contains('fa-regular');
+    watchLaterBtn.removeChild(watchLaterBtn.children[0]);
+
+    if(hasClockIcon) {
+        APIClient.addWatchList(user.id, media.MediaId).then(response => {
+            const xIcon = new HTMLElementBuilder('i').setAttribute('class', 'fa-solid fa-x').build();
+            watchLaterBtn.appendChild(xIcon);
+        })
+        .catch(error => {
+            console.log(error);
+        })
+    }
+    else {
+        APIClient.removeWatchList(user.id, media.MediaId).then(response => {
+            const clockIcon = new HTMLElementBuilder('i').setAttribute('class', 'fa-regular fa-clock').build();
+            watchLaterBtn.appendChild(clockIcon);
+        })
+        .catch(error => {
+            console.log(error);
+        })
+    }
+}
 
 export function buildMediaCard(movie) {
     return `<div class="card m-5" data-bs-toggle="modal" data-bs-target="#modal${movie.MediaId}" style="width: 18rem;">
@@ -221,9 +247,8 @@ export async function buildModal(movie, reviews) {
                     </div>
                     </div>
                 </div>
-                <div class="modal-footer">
+                <div class="modal-footer" id="modal-footer-${movie.MediaId}">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                    <button id="watch-later-${movie.MediaId}" class="btn btn-primary"><i class="fa-regular fa-clock"></i></button>
                     <button type="button" class="btn btn-primary">Review</button>
                 </div>
                 </div>
@@ -239,7 +264,7 @@ function clearMedia() {
     }
 }
 
-export async function loadMedia(movies) {
+export async function loadMedia(movies, fromWatchList) {
     
     clearMedia();
 
@@ -247,6 +272,9 @@ export async function loadMedia(movies) {
     let col = 0;
     let mediaCount = 0;
     let body = document.getElementById("card-container");
+    const userList = await APIClient.fetchUserList(user.id);
+    console.log("USER LIST");
+    console.log(userList);
 
     for(const [key, value] of Object.entries(movies)) {
         console.log(value)
@@ -254,30 +282,36 @@ export async function loadMedia(movies) {
         let media = mediaResponse.data.results[0];
         let reviewsResponse = await api.fetchReviews(value.MediaId);
         let reviews = reviewsResponse.data.results;
+        let inWatchList = userList.data.results.some(userMedia => userMedia.MediaId === media.MediaId);
+        
 
         body.insertAdjacentHTML('beforeend', buildMediaCard(media));
         body.insertAdjacentHTML('beforeend', await buildModal(media, reviews));
 
-        document.getElementById(`watch-later-${media.MediaId}`).addEventListener("click", event => {
-            const watchLaterBtn = document.getElementById(`watch-later-${media.MediaId}`);
-            // Get the <i> element within the button
-            const iconElement = watchLaterBtn.querySelector('i');
-            const hasClockIcon = iconElement.classList.contains('fa-regular');
-            watchLaterBtn.removeChild(watchLaterBtn.children[0]);
+        const modalFooter = document.getElementById(`modal-footer-${media.MediaId}`);
 
-            if(hasClockIcon) {
-                const xIcon = new HTMLElementBuilder('i').setAttribute('class', 'fa-solid fa-x').build();
-                watchLaterBtn.appendChild(xIcon);
-            }
-            else {
-                const clockIcon = new HTMLElementBuilder('i').setAttribute('class', 'fa-regular fa-clock').build();
-                watchLaterBtn.appendChild(clockIcon);
-            }
+        if(inWatchList) {
+            modalFooter.innerHTML += `<button id="watch-later-${media.MediaId}" class="btn btn-primary"><i class="fa-solid fa-x"></i></button>`
+        }
+        else {
+            modalFooter.innerHTML += `<button id="watch-later-${media.MediaId}" class="btn btn-primary"><i class="fa-regular fa-clock"></i></button>`
+        }
+
+        document.getElementById(`watch-later-${media.MediaId}`).addEventListener("click", _ => {
+            toggleWatchList(media);
         })
+
+        const modal = new bootstrap.Modal(document.getElementById(`modal${media.MediaId}`));
+
+        // Add an event listener for the hidden.bs.modal event
+        modal._element.addEventListener('hidden.bs.modal', function () {
+            if(fromWatchList) {
+                const response = APIClient.fetchUserList(user.id);
+                loadMedia(response, true)
+            }
+        });
 
         mediaCount++;
         col++;
     }
 }
-
-await loadMedia(movies)

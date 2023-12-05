@@ -225,12 +225,13 @@ export async function buildModal(movie, reviews) {
                             <h5 class="card-title">My Review</h5>
                             <form class="create-review-form" data-media-id="${mediaId}" data-review-exists="${review_exists}"> 
                                 <div class="mb-3">
-                                <label for="review-description" class="form-label">Description</label>
-                                <textarea class="form-control" id="review-description" rows="4" placeholder="Enter a description for your review">${initialReviewDescription}</textarea>                                </div>
-                            <div class="mb-3">
-                                <label for="review-rating" class="form-label">Rating</label>
-                                <input type="number" class="form-control" id="review-rating" placeholder="Enter a rating for your review" value="${initialReviewRating}">
-                            </div>
+                                    <label for="review-description" class="form-label">Description</label>
+                                    <textarea class="form-control" id="review-description" rows="4" placeholder="Enter a description for your review" required>${initialReviewDescription}</textarea>                                
+                                </div>
+                                <div class="mb-3">
+                                    <label for="review-rating" class="form-label">Rating</label>
+                                    <input type="number" class="form-control" id="review-rating" placeholder="Enter a rating for your review" value="${initialReviewRating}" min="1" max="10" required>
+                                </div>
                             <button type="submit" class="btn btn-primary" id="submit" >Submit Review</button>
                             </form>
                         </div>
@@ -303,10 +304,10 @@ export async function loadMedia(movies, fromWatchList) {
         const modal = new bootstrap.Modal(document.getElementById(`modal${media.MediaId}`));
 
         // Add an event listener for the hidden.bs.modal event
-        modal._element.addEventListener('hidden.bs.modal', function () {
+        modal._element.addEventListener('hidden.bs.modal', async function () {
             if(fromWatchList) {
-                const response = APIClient.fetchUserList(user.id);
-                loadMedia(response, true)
+                const response = await APIClient.fetchUserList(user.id);
+                loadMedia(response.data.results, true)
             }
         });
 

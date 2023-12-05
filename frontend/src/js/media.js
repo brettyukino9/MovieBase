@@ -4,6 +4,10 @@ import HTMLElementBuilder from "./HTMLElementBuilder.js";
 
 const user = await APIClient.currentUser();
 
+// Set the text of the user's email in the header
+document.getElementById("email-header").textContent  = user.email;
+
+
 // Get all the media in the database
 let mediaRequest = await api.fetchAllMedia();
 let movies = mediaRequest.data.results;
@@ -43,7 +47,6 @@ async function submitReview(event, userId, mediaId, review_exists) {
 
 
     console.log(description, rating, userId, mediaId, review_exists)
-    console.log("review exists", review_exists)
     try {
         if (review_exists > 0) {
             // Update review
@@ -112,7 +115,6 @@ body.addEventListener('submit', function (event) {
         // Get if a review exists from the data attribute
         const review_exists = event.target.getAttribute('data-review-exists');
 
-        console.log("got review exists event listener", review_exists)
         // Call the submitReview function with the correct mediaId
         submitReview(event, user.id, mediaId, review_exists);
     }
@@ -229,7 +231,7 @@ export async function buildModal(movie, reviews) {
                                 <label for="review-rating" class="form-label">Rating</label>
                                 <input type="number" class="form-control" id="review-rating" placeholder="Enter a rating for your review" value="${initialReviewRating}">
                             </div>
-                            <button type="submit" class="btn btn-primary" id="submit" >Submit</button>
+                            <button type="submit" class="btn btn-primary" id="submit" >Submit Review</button>
                             </form>
                         </div>
                     </div>
@@ -249,7 +251,7 @@ export async function buildModal(movie, reviews) {
                 </div>
                 <div class="modal-footer" id="modal-footer-${movie.MediaId}">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                    <button type="button" class="btn btn-primary">Review</button>
+                    <button id="watch-later-${movie.MediaId}" class="btn btn-primary"><i class="fa-regular fa-clock"></i></button>
                 </div>
                 </div>
             </div>

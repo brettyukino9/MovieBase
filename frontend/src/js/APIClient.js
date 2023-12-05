@@ -10,7 +10,7 @@ export default {
     return HTTPClient.get(API_BASE + '/search/media')
   },
   fetchMedia: (mediaId) => {
-    return HTTPClient.get(API_BASE + `/${mediaId}`);
+    return HTTPClient.get(API_BASE + `/media/${mediaId}`);
   },
   fetchMediaTypes: () => {
     return HTTPClient.get(API_BASE + `/search/mediatype`);

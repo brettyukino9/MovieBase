@@ -30,8 +30,8 @@ let genreRequest = await api.fetchGenres();
 let genres = genreRequest.data.results;
 console.log(genres);
 
-function buildMediaCard(movie, i) {
-    return `<div class="card m-5" data-bs-toggle="modal" data-bs-target="#modal${i}" style="width: 18rem;">
+function buildMediaCard(movie) {
+    return `<div class="card m-5" data-bs-toggle="modal" data-bs-target="#modal${movie.MediaId}" style="width: 18rem;">
                 <img src=${movie.Poster} class="card-img-top" alt="...">
                 <div class="card-body">
                     <h5 class="card-title">${movie.Title}</h5>
@@ -39,27 +39,31 @@ function buildMediaCard(movie, i) {
             </div>`;
 }
 
-async function buildModal(movie, i) {
-    let ageRatingId = movie.AgeRatingId;
+function buildModal(movie) {
+    let ageRating = `${movie.AgeRatingType}\n${movie.AgeRatingDescription}`;
     let averageRating = movie.AverageRating;
+    let castCrew = movie.CastCrew.replaceAll(',', '<br>');
     let description = movie.Description;
-    let language = languages[movie.LanguageId - 1].Name;
+    let genre = movie.Genre;
+    let language = movie.Language;
     let mediaId = movie.MediaId;
-    let mediaType = mediaTypes[movie.MediaTypeId - 1].Name;
-    let publisherId = movie.PublisherId;
+    let mediaType = movie.MediaType;
+    let poster = movie.Poster;
+    let publisherId = movie.Publisher;
     let releaseDate = movie.ReleaseDate.slice(0, -14);
     let runTime = movie.RunTime / 60000;
+    let streamingServices = movie.StreamingService.replaceAll(',', '<br>');
     let title =  movie.Title;
 
     // let genres = await api.fetchMediaGenres(mediaId);
     // console.log(genres.data.results)
-    return `<div class="modal" id="modal${i}" tabindex="-1">
+    return `<div class="modal" id="modal${movie.MediaId}" tabindex="-1">
             <div class="modal-dialog modal-dialog-centered modal-xl">
                 <div class="modal-content">
                 <div class="modal-body">
                     <div class="d-flex gap-3">
                     <div>
-                        <img src=${movie.Poster} id="movie-poster" class="card-img-top" alt="...">
+                        <img src=${poster} id="movie-poster" class="card-img-top" alt="...">
                         <table class="table">
                         <tbody>
                             <tr>
@@ -76,7 +80,7 @@ async function buildModal(movie, i) {
                             </tr>
                             <tr>
                             <th scope="row">Publisher</th>
-                            <td></td>
+                            <td>${publisherId}</td>
                             </tr>
                             <tr>
                             <th scope="row">Language</th>
@@ -84,19 +88,19 @@ async function buildModal(movie, i) {
                             </tr>
                             <tr>
                             <th scope="row">Age Rating</th>
-                            <td></td>
+                            <td>${ageRating}</td>
                             </tr>
                             <tr>
                             <th scope="row">Streaming Services</th>
-                            <td></td>
+                            <td>${streamingServices}</td>
                             </tr>
                             <tr>
-                            <th scope="row">Director</th>
-                            <td></td>
+                            <th scope="row">Cast & Crew</th>
+                            <td>${castCrew}</td>
                             </tr>
                             <tr>
                             <th scope="row">Genres</th>
-                            <td></td>
+                            <td>${genre}</td>
                             </tr>
                         </tbody>
                         </table>
@@ -106,44 +110,9 @@ async function buildModal(movie, i) {
                         <h1>${title}</h1>
                         <h3><i class="fa-solid fa-star"></i> ${averageRating}</h3>
                         </div>
-                        <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Doloremque eos illo earum in quam inventore minus amet, laborum adipisci dolores numquam, expedita magnam porro soluta eius. Sed laboriosam non, fugit cum dolorem commodi sunt earum provident dolor dolore at iure eum facere. Tempora nisi sed explicabo officiis alias voluptate amet!</p>
+                        <p>${description}</p>
                         <h3>Reviews</h3>
                         <ul class="list-group reviews h-100">
-                        <li class="list-group-item review-item">
-                            <div class="d-flex align-items-center justify-content-between me-5">
-                            <h5>msabrams</h5>
-                            <h5><i class="fa-solid fa-star"></i> 9.7</h5>
-                            </div>
-                            <p>Lorem ipsum dolor, sit amet consectetur adipisicing elit. At voluptas laboriosam nobis veniam culpa quas facilis quasi recusandae assumenda rerum molestiae et deserunt repellat eum, commodi accusamus quia est harum reiciendis sequi consequuntur quis atque non? Veniam quod aut odio. Quis sequi quia perferendis non qui. Facilis alias nam culpa.</p>
-                        </li> 
-                        <li class="list-group-item review-item">
-                            <div class="d-flex align-items-center justify-content-between me-5">
-                            <h5>msabrams</h5>
-                            <h5><i class="fa-solid fa-star"></i> 9.7</h5>
-                            </div>
-                            <p>Lorem ipsum dolor, sit amet consectetur adipisicing elit. At voluptas laboriosam nobis veniam culpa quas facilis quasi recusandae assumenda rerum molestiae et deserunt repellat eum, commodi accusamus quia est harum reiciendis sequi consequuntur quis atque non? Veniam quod aut odio. Quis sequi quia perferendis non qui. Facilis alias nam culpa.</p>
-                        </li> 
-                        <li class="list-group-item review-item">
-                            <div class="d-flex align-items-center justify-content-between me-5">
-                            <h5>msabrams</h5>
-                            <h5><i class="fa-solid fa-star"></i> 9.7</h5>
-                            </div>
-                            <p>Lorem ipsum dolor, sit amet consectetur adipisicing elit. At voluptas laboriosam nobis veniam culpa quas facilis quasi recusandae assumenda rerum molestiae et deserunt repellat eum, commodi accusamus quia est harum reiciendis sequi consequuntur quis atque non? Veniam quod aut odio. Quis sequi quia perferendis non qui. Facilis alias nam culpa.</p>
-                        </li> 
-                        <li class="list-group-item review-item">
-                            <div class="d-flex align-items-center justify-content-between me-5">
-                            <h5>msabrams</h5>
-                            <h5><i class="fa-solid fa-star"></i> 9.7</h5>
-                            </div>
-                            <p>Lorem ipsum dolor, sit amet consectetur adipisicing elit. At voluptas laboriosam nobis veniam culpa quas facilis quasi recusandae assumenda rerum molestiae et deserunt repellat eum, commodi accusamus quia est harum reiciendis sequi consequuntur quis atque non? Veniam quod aut odio. Quis sequi quia perferendis non qui. Facilis alias nam culpa.</p>
-                        </li> 
-                        <li class="list-group-item review-item">
-                            <div class="d-flex align-items-center justify-content-between me-5">
-                            <h5>msabrams</h5>
-                            <h5><i class="fa-solid fa-star"></i> 9.7</h5>
-                            </div>
-                            <p>Lorem ipsum dolor, sit amet consectetur adipisicing elit. At voluptas laboriosam nobis veniam culpa quas facilis quasi recusandae assumenda rerum molestiae et deserunt repellat eum, commodi accusamus quia est harum reiciendis sequi consequuntur quis atque non? Veniam quod aut odio. Quis sequi quia perferendis non qui. Facilis alias nam culpa.</p>
-                        </li> 
                         <li class="list-group-item review-item">
                             <div class="d-flex align-items-center justify-content-between me-5">
                             <h5>msabrams</h5>
@@ -171,7 +140,10 @@ let body = document.getElementById("card-container");
 
 for(const [key, value] of Object.entries(movies)) {
     console.log(value)
-    body.innerHTML += await buildMediaCard(value, mediaCount) + await buildModal(value, mediaCount);
+    let mediaResponse = await api.fetchMedia(value.MediaId);
+    let media = mediaResponse.data.results[0];
+    console.log(media);
+    body.innerHTML += buildMediaCard(media) + buildModal(media);
     mediaCount++;
     col++;
 }

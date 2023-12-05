@@ -251,7 +251,6 @@ export async function buildModal(movie, reviews) {
                 </div>
                 <div class="modal-footer" id="modal-footer-${movie.MediaId}">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                    <button id="watch-later-${movie.MediaId}" class="btn btn-primary"><i class="fa-regular fa-clock"></i></button>
                 </div>
                 </div>
             </div>

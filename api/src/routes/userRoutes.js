@@ -65,8 +65,10 @@ router.post('/login', (req, res) => {
     })
     .then((results) => {
       if (results.results[0].isVerifiedUser) {
-        startSession(req, res, req.body.email);
-        return res.status(200).json({ success: true });
+        db.query("SELECT UserId FROM User WHERE Email = ?;", [req.body.email]).then(response => {
+            startSession(req, res, {"email": req.body.email, "id": response.results[0].UserId});
+            return res.status(200).json({data: results});
+        })
       } else {
         // User is not verified, return an error response
         return res.status(400).json({ success: false, error: "Invalid email or password" });

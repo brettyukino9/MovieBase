@@ -1,9 +1,8 @@
+import APIClient from "./APIClient.js";
 import api from "./APIClient.js"
 import HTMLElementBuilder from "./HTMLElementBuilder.js";
 
-const ROWSTART = '<div class="row">';
-
-let enc = new TextDecoder("utf-8");
+const user = await APIClient.currentUser();
 
 // Get all the media in the database
 let mediaRequest = await api.fetchAllMedia();

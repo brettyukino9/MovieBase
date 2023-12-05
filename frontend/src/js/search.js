@@ -48,7 +48,7 @@ try {
   
     const search = form.elements["search"].value;
     const filter =  document.querySelector(".query-filter").textContent;
-
+    console.log(filter + " " + search)
     if(!search || search === "") {
       APIClient.fetchAllMedia().then(response => {
         loadMedia(response.data.results);
@@ -56,9 +56,11 @@ try {
     }
     else {
       APIClient.fetchSearch(filter, search).then(response => {
+        console.log(response.data)
         loadMedia(response.data);
       })
       .catch(error => {
+        console.log("Error fetching search results");
         console.log(error);
       })
     }

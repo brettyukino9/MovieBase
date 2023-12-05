@@ -4,6 +4,10 @@ import HTMLElementBuilder from "./HTMLElementBuilder.js";
 
 const user = await APIClient.currentUser();
 
+// Set the text of the user's email in the header
+document.getElementById("email-header").textContent  = user.email;
+
+
 // Get all the media in the database
 let mediaRequest = await api.fetchAllMedia();
 let movies = mediaRequest.data.results;
@@ -203,7 +207,7 @@ export async function buildModal(movie, reviews) {
                                 <label for="review-rating" class="form-label">Rating</label>
                                 <input type="number" class="form-control" id="review-rating" placeholder="Enter a rating for your review" value="${initialReviewRating}">
                             </div>
-                            <button type="submit" class="btn btn-primary" id="submit" >Submit</button>
+                            <button type="submit" class="btn btn-primary" id="submit" >Submit Review</button>
                             </form>
                         </div>
                     </div>
@@ -224,7 +228,6 @@ export async function buildModal(movie, reviews) {
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
                     <button id="watch-later-${movie.MediaId}" class="btn btn-primary"><i class="fa-regular fa-clock"></i></button>
-                    <button type="button" class="btn btn-primary">Review</button>
                 </div>
                 </div>
             </div>

@@ -305,9 +305,9 @@ export async function loadMedia(movies, fromWatchList) {
         const modal = new bootstrap.Modal(document.getElementById(`modal${media.MediaId}`));
 
         // Add an event listener for the hidden.bs.modal event
-        modal._element.addEventListener('hidden.bs.modal', function () {
+        modal._element.addEventListener('hidden.bs.modal', async function () {
             if(fromWatchList) {
-                const response = APIClient.fetchUserList(user.id);
+                const response = await APIClient.fetchUserList(user.id);
                 loadMedia(response, true)
             }
         });

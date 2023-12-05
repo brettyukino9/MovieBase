@@ -29,5 +29,8 @@ export default {
   },
   fetchMediaGenres: (mediaId) => {
     return HTTPClient.get(API_BASE + `/media/${mediaId}/genres}`);
+  },
+  fetchSearch: (filter, search) => {
+    return HTTPClient.post(API_BASE + `/search/search`, {filter, search})
   }
 }

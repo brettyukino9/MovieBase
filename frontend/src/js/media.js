@@ -47,7 +47,6 @@ async function submitReview(event, userId, mediaId, review_exists) {
 
 
     console.log(description, rating, userId, mediaId, review_exists)
-    console.log("review exists", review_exists)
     try {
         if (review_exists > 0) {
             // Update review
@@ -90,7 +89,6 @@ body.addEventListener('submit', function (event) {
         // Get if a review exists from the data attribute
         const review_exists = event.target.getAttribute('data-review-exists');
 
-        console.log("got review exists event listener", review_exists)
         // Call the submitReview function with the correct mediaId
         submitReview(event, user.id, mediaId, review_exists);
     }

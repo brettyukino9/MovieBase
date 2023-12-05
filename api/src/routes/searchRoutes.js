@@ -8,11 +8,9 @@ module.exports = router;
 
 // Search
 router.post('/search', (req, res) => {
-    print(req.body)
     const stype = req.body.filter;
     const svalue = req.body.search;
     const agg = req.body.aggType;
-    console.log("search " + stype + " " + svalue + " " + agg)
     if(!stype || !svalue) {
         return res.status(400).json({success: false, error: "Missing data"});
     }

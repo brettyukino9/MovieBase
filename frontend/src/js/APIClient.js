@@ -46,7 +46,6 @@ export default {
     return HTTPClient.get(API_BASE + `/users/${userId}`);
   },
   fetchSearch: (filter, search) => {
-    console.log("fetchSearch " + filter + " " + search)
     return HTTPClient.post(API_BASE + `/search/search`, {filter, search});
   },
   postReview: (userId, mediaId, description, rating) => {

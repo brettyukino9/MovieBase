@@ -39,7 +39,7 @@ export function buildMediaCard(movie) {
             </div>`;
 }
 
-export async function buildModal(movie) {
+export async function buildModal(movie, reviews) {
     let ageRating = `${movie.AgeRatingType}\n${movie.AgeRatingDescription}`;
     let averageRating = movie.AverageRating;
     let castCrew = movie.CastCrew.replaceAll(',', '<br>');
@@ -167,10 +167,12 @@ export async function loadMedia(movies) {
         let reviews = reviewsResponse.data.results;
         // console.log(media);
         // console.log(reviews);
-        body.innerHTML += buildMediaCard(media) + buildModal(media);
+        let card = buildMediaCard(media);
+        let modal = await buildModal(media, reviews);
+        body.innerHTML += card + modal;
         mediaCount++;
         col++;
     }
 }
 
-loadMedia(movies);
+loadMedia(movies)

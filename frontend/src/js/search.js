@@ -51,12 +51,12 @@ try {
 
     if(!search || search === "") {
       APIClient.fetchAllMedia().then(response => {
-        loadMedia(response.data.results);
+        loadMedia(response.data.results, false);
       })
     }
     else {
       APIClient.fetchSearch(filter, search).then(response => {
-        loadMedia(response.data);
+        loadMedia(response.data, false);
       })
       .catch(error => {
         console.log(error);
@@ -72,3 +72,9 @@ catch {
 
 
 loadSearchDropdown();
+
+APIClient.fetchAllMedia().then(response => {
+  loadMedia(response.data.results, false)
+})
+
+

@@ -13,7 +13,7 @@ services:
   # create database container
   # https://blog.christian-schou.dk/creating-and-running-a-mysql-database-with-docker-compose/ 
   db:
-    container_name: database
+    container_name: moviebase-database
     image: mysql:8.0
     restart: always
     env_file:
@@ -27,18 +27,43 @@ services:
       retries: 10
     volumes:
       - mysql_database:/var/lib/mysql
+      - ./database/:/docker-entrypoint-initdb.d
+
   api:
-    container_name: api
-    ports:
-     - '8080:80'
+    container_name: moviebase-api
     build:
-      context: ./backend
+      context: ./api
     env_file:
       - .env 
     volumes:
-      - "./backend:/app"
+      - "./api:/app"
     depends_on:
       db:
         condition: service_healthy
+    environment:
+      - PORT=80
+  
+  frontend:
+    container_name: moviebase-frontend
+    restart: always
+    build:
+      context: ./frontend
+    volumes:
+      - "./frontend/src:/app/src"
+    environment:
+      - PORT=80
+  
+  proxy:
+    container_name: moviebase-nginx
+    image: nginx:latest
+    restart: unless-stopped
+    volumes:
+      - ./proxy/default.conf.template:/etc/nginx/templates/default.conf.template
+    ports:
+      - 80:80
+    depends_on:
+      - api
+      - frontend
+  
 volumes:
   mysql_database:

@@ -29,5 +29,11 @@ export default {
   },
   fetchMediaGenres: (mediaId) => {
     return HTTPClient.get(API_BASE + `/media/${mediaId}/genres}`);
+  },
+  fetchReviews: (mediaId) => {
+    return HTTPClient.get(API_BASE + `/reviews/${mediaId}`);
+  },
+  fetchUserById: (userId) => {
+    return HTTPClient.get(API_BASE + `/users/${userId}`);
   }
 }

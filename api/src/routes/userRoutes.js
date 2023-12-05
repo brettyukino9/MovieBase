@@ -77,12 +77,21 @@ router.get('/test', (req, res) => {
 // Get Profile Info
 router.get('/:userId', (req, res) => {
     const userId = req.params.userId;
+    console.log(userId);
+    
     const query = "SELECT * FROM User WHERE userId = ?";
 
     // TO DO: Implement security measures
 
     db.query(query,[userId]).then(results => {
-        return res.status(200).json({data: results});
+        let user = results.results[0]
+        let data = {
+            UserId: user.UserId,
+            FirstName: user.FirstName,
+            LastName: user.LastName,
+            Email: user.Email,
+        }
+        return res.status(200).json(JSON.stringify(data));
     });
     
 });

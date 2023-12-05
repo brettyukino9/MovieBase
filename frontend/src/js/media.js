@@ -39,7 +39,9 @@ function buildMediaCard(movie) {
             </div>`;
 }
 
-function buildModal(movie) {
+
+
+async function buildModal(movie, reviews) {
     let ageRating = `${movie.AgeRatingType}\n${movie.AgeRatingDescription}`;
     let averageRating = movie.AverageRating;
     let castCrew = movie.CastCrew.replaceAll(',', '<br>');
@@ -54,7 +56,21 @@ function buildModal(movie) {
     let runTime = movie.RunTime / 60000;
     let streamingServices = movie.StreamingService.replaceAll(',', '<br>');
     let title =  movie.Title;
-
+    let reviewsText = '';
+    for(const [key, value] of Object.entries(reviews)) {
+        let userRequest = await api.fetchUserById(value.UserId);
+        let user = JSON.parse(userRequest);
+        let uint8Array = new Uint8Array(value.Description.data);
+        let initialDescription = new TextDecoder("utf-8").decode(uint8Array);
+        console.log(initialDescription);
+        reviewsText += `<li class="list-group-item review-item">
+                            <div class="d-flex align-items-center justify-content-between me-5">
+                            <h5>${user.FirstName} ${user.LastName}</h5>
+                            <h5><i class="fa-solid fa-star"></i> ${value.Rating}</h5>
+                            </div>
+                            <p>${initialDescription}</p>
+                        </li>`
+    }
     // let genres = await api.fetchMediaGenres(mediaId);
     // console.log(genres.data.results)
     return `<div class="modal" id="modal${movie.MediaId}" tabindex="-1">
@@ -113,13 +129,7 @@ function buildModal(movie) {
                         <p>${description}</p>
                         <h3>Reviews</h3>
                         <ul class="list-group reviews h-100">
-                        <li class="list-group-item review-item">
-                            <div class="d-flex align-items-center justify-content-between me-5">
-                            <h5>msabrams</h5>
-                            <h5><i class="fa-solid fa-star"></i> 9.7</h5>
-                            </div>
-                            <p>Lorem ipsum dolor, sit amet consectetur adipisicing elit. At voluptas laboriosam nobis veniam culpa quas facilis quasi recusandae assumenda rerum molestiae et deserunt repellat eum, commodi accusamus quia est harum reiciendis sequi consequuntur quis atque non? Veniam quod aut odio. Quis sequi quia perferendis non qui. Facilis alias nam culpa.</p>
-                        </li> 
+                        ${reviewsText}
                         </ul>
                     </div>
                     </div>
@@ -142,8 +152,13 @@ for(const [key, value] of Object.entries(movies)) {
     console.log(value)
     let mediaResponse = await api.fetchMedia(value.MediaId);
     let media = mediaResponse.data.results[0];
-    console.log(media);
-    body.innerHTML += buildMediaCard(media) + buildModal(media);
+    let reviewResponse = await api.fetchReviews(value.MediaId);
+    let reviews = reviewResponse.data.results;
+    // console.log(reviews);
+    // console.log(media);
+    let modal = await buildModal(media, reviews);
+    let card = buildMediaCard(media);
+    body.innerHTML += card + modal;
     mediaCount++;
     col++;
 }

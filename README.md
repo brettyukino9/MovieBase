@@ -33,6 +33,16 @@ Database contains the sql scripts and any other important database files.
 
 1. Ensure you do not have anything using the localhost port on your machine i.e. PORT 80
 
+2. Create a .env file based on the .env.example. Below is the info you need to know about it.
+    - `DB_HOST`: the host used for the database
+    - `DB_PORT`: the external port for the database
+    - `MYSQL_USER` : the user created in the database for interactions
+    - `MYSQL_PASSWORD` : the password used for the user, this will need to be added by you.
+    - `MYSQL_DATABASE` : the name of the database the app uses.
+    - `DB_CHARSET` : the character set used by the database.
+    - `MYSQL_ROOT_PASSWORD` : the root password for your database, this should be as secure as possible and you will have to set it.
+    - `API_SECRET_KEY` : key used for password hashing. 32 characters that should be generated using a secure method localized to the machine you use to run the app. USING ONLINE GENERATORS IS NOT SECURE. (use them at your own desgression).
+
 2. In your terminal of choice navigate to this directory (the terminal where this read me is located) 
 
 3. Once in the project root directory use the following command (remember to save your changes if you want them to appear when the dockers are built)
